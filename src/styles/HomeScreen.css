@@ -1,0 +1,8 @@
+.slider{
+    overflow-x: auto;
+    
+}
+
+.slider::-webkit-scrollbar{
+    display: none;
+}

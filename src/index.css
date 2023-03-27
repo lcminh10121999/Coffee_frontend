@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body, html{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+}
+
+input:focus,textarea:focus,select:focus{
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+
+.hoveres{
+    @apply hidden
+}
+
+.hovered:hover .hoveres{
+    @apply flex-colo
+}
+.flex-colo{
+    @apply flex flex-col justify-center items-center;
+}
+.flex-rows{
+    @apply flex flex-col justify-center items-center;
+}
+.flex-btn{
+    @apply flex justify-between items-center;
+}
+.transitions{
+    @apply transition duration-300 ease-in;
+}
+
+.zIndex{
+    z-index: 1000;
+}
+
+.mb-px-10{
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+}
+/* input::placeholder {
+  
+    color: white;
+} */
+
+.btn-58{
+    height: 30px;
+    width: 100px;
+    text-align: center;
+    padding-top: 2px;
+    border-radius: 5px;
+    margin-top: 10px;
+    
+}
+
+.hexagon {
+    position: relative;
+    width: 60px;
+    height: 22px;
+    background-color: #64C7CC;
+    margin: 50px;
+  }
+  
+  .hexagon:before{
+    content: " ";
+    position: absolute;
+    border-top: 11px solid transparent;
+    border-bottom: 11px solid transparent;
+  }
+  
+  .hexagon:before {
+    left: 100%;
+    border-left: 11px solid #64C7CC;
+  }
+  
+  .hexagon:after {
+    right: 100%;
+    border-right: 11px solid #64C7CC;
+  }
+
+
+  .footer-top__image{
+    background-image: url("../src/assets/footer-desktop.png");
+    background-size: cover;
+  }
+  .bg-image__login{
+    background-image: url(" https://file.hstatic.net/1000075078/article/3__1__2b67342f4db64bb082944cf078afd910_master.jpg");
+    background-size: cover;
+   
+  }
+  .about-us_home{
+    background-image: url("https://order.thecoffeehouse.com/_nuxt/img/flower.3438b10.svg");
+    background-size: cover;
+  }
+  .font-size__xss{
+    font-size: 0.6rem;
+  }
+ 
+  .sub-nav-translate{
+    background-color: white;
+    /* display: none; */
+    position: absolute;
+   
+    color: black;
+    padding: 5px;
+  }
+ 
+  .nav-translate:hover + .sub-nav-translate{
+    display: block;
+  }
+
+  
+
+  .change-image__default{
+    display: none;
+  }
+
+  .image__default:hover ~ .change-image__default{
+    display: flex;
+  }
+
+  .change-arrow{
+    background-image: url("https://cdn-icons-png.flaticon.com/512/60/60995.png");
+    background-repeat: no-repeat;
+    background-position:
+    calc(100% - 6px) center;
+    background-size: 12px;
+  }
+/* .sidebar-admin__active{
+  border-right: 5px solid white;
+  color: white;
+  background: rgb(45, 51, 89);
+} */
+
+
+.personal-image {
+  text-align: center;
+}
+.personal-image .upload-avatar {
+  display: none;
+}
+.personal-figure {
+  position: relative;
+  /* width: 120px;
+  height: 120px; */
+}
+.personal-avatar {
+  cursor: pointer;
+  /* width: 120px;
+  height: 120px; */
+  box-sizing: border-box;
+  border-radius: 100%;
+  border: 2px solid transparent;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+  transition: all ease-in-out .3s;
+}
+.personal-avatar:hover {
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+}
+.personal-figcaption {
+  cursor: pointer;
+  position: absolute;
+  top: 0px;
+  width: inherit;
+  height: inherit;
+  border-radius: 100%;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0);
+  transition: all ease-in-out .3s;
+}
+.personal-figcaption:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, .5);
+}
+.personal-figcaption > img {
+
+  width: 50px;
+  height: 50px;
+}

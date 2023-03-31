@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Route, Link, Routes, } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Routes, Navigate, } from "react-router-dom";
+import { ROUTER_URL } from "./data/ruotersUrl";
 import ScrollToTop from "./Handle/ScrollToTop";
 import AboutUs from "./Screens/AboutUs";
 import AddCategoryAdmin from "./Screens/Admin/AddCategoryAdmin";
@@ -21,25 +22,43 @@ import UserAddress from "./Screens/UserAddress";
 import UserHistory from "./Screens/UserHistory";
 import UserProfile from "./Screens/UserProfile";
 function App() {
+  const url = ROUTER_URL;
   return (
     <ScrollToTop>
       <Routes>
-        <Route path="/" element={<HomeScreen />} />
-        <Route path="/about-us" element={<AboutUs />} />
+        <Route path={url.home} element={<HomeScreen />} />
+        <Route path={url.about_us} element={<AboutUs />} />
+        <Route path={url.login} element={<Login />}></Route>
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="/product" element={<Menu />} />
+        <Route path={url.product} element={<Menu />} />
         <Route path="/product/:id/:name" element={<ProductDetail />}></Route>
-        <Route path="/cart" element={<CartHome />}></Route>
-        <Route path="/checkout" element={<CheckOut />}></Route>
-        <Route path="/news" element={<News />} />
+        <Route path={url.cart} element={<CartHome />}></Route>
+        <Route path={url.checkout} element={<CheckOut />}></Route>
+        <Route path={url.new} element={<News />} />
         <Route path="/news/:id/:name" element={<NewsDetail />} />
-        <Route path="/user-info" >
-          <Route path="profile" element={<Profile />}></Route>
-          <Route path="history" element={<UserHistory />}></Route>
-          <Route path="user-address" element={<UserAddress />}></Route>
-        </Route>
-        <Route path="/admin">
+        <Route path={url.profile} element={<Profile />}></Route>
+        <Route path={url.history} element={<UserHistory />}></Route>
+        <Route path={url.address} element={<UserAddress />}></Route>
+        <Route path={url.user_info} element={<Navigate to="/user-info/profile" replace />} >
 
+          {/* <Route path="history" element={<UserHistory />}></Route>
+          <Route path="user-address" element={<UserAddress />}></Route> */}
+        </Route>
+
+        {/* admin */}
+        <Route path={url.admin} element={<Navigate to="/admin/product/list" replace />} ></Route>
+        <Route path={url.admin_login} element={<Login />}></Route>
+        <Route path={url.admin_product} element={<Navigate to="/admin/product/list" replace />} ></Route>
+        <Route path={url.admin_product_list} element={<ProductList />} />
+        <Route path={url.admin_product_create} element={<AddProductAdmin />} />
+        <Route path={url.admin_category} element={<Navigate to="/admin/category/list" replace />} ></Route>
+        <Route path={url.admin_category_list} element={<CategoryList />} />
+        <Route path={url.admin_category_create} element={<AddCategoryAdmin />} />
+        <Route path={url.admin_users} element={<Navigate to="/admin/users/list" replace />} ></Route>
+        <Route path={url.admin_users_list} element={<UsersList />} />
+        <Route path={url.admin_topping_size} element={<Navigate to="/admin/topping-size/list" replace />} ></Route>
+        <Route path={url.admin_topping_size_list} element={<SizeTopinList />} />
+        {/* <Route path="/admin" >
           <Route index element={<ProductList />} />
           <Route path="login" element={<Login />}></Route>
           <Route path="product">
@@ -60,8 +79,7 @@ function App() {
             <Route index element={<SizeTopinList />} />
             <Route path="list" element={<SizeTopinList />} />
           </Route>
-        </Route>
-        <Route path="/login" element={<Login />} />
+        </Route> */}
       </Routes>
     </ScrollToTop>
 

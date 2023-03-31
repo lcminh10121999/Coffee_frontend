@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper";
-
+import { Pagination } from "swiper";
 Banner.propTypes = {};
 
 function Banner(props) {
@@ -14,8 +14,16 @@ function Banner(props) {
         direction="horizontal"
         slidesPerView={1}
         loop={true}
+        pagination={{
+          dynamicBullets: true,
+        }}
+        style={{
+          "--swiper-pagination-color": "#FFBA08",
+          "--swiper-pagination-bullet-size": "10px",
+          "--swiper-pagination-bullet-horizontal-gap": "4px",
+        }}
         speed={1000}
-        modules={[Autoplay]}
+        modules={[Autoplay, Pagination]}
         autoplay={{ delay: 1000, disableOnInteraction: false }}
         //   className={props.classNameBanner}
         className={`w-full lg:h-100  lg:container lg:m-auto xs:m-0 ${props.classNameBannerImage}`}

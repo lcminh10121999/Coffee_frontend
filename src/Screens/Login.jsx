@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 Login.propTypes = {};
 
@@ -26,6 +27,20 @@ function Login(props) {
     },
   };
 
+  const [dataLogin, setDataLogin] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChangeInputLogin = (e) => {
+    setDataLogin({ ...dataLogin, [e.target.name]: e.target.value });
+  };
+
+  const handleLogin = (e) => {
+    console.log(dataLogin);
+  };
+
+  const [showPassword, setShowPassword] = useState(true);
   return (
     <>
       <AnimatePresence>
@@ -71,8 +86,11 @@ function Login(props) {
                   >
                     <div className="w-full relative shadow-lg">
                       <input
-                        type="text"
+                        type="email"
                         placeholder="Nhập Email"
+                        name="email"
+                        value={dataLogin.email}
+                        onChange={(e) => handleChangeInputLogin(e)}
                         className="w-full border bg-white rounded-5  px-2 py-2"
                       />
                       <span className="text-sm absolute top-11 left-2 text-red-700">
@@ -81,10 +99,30 @@ function Login(props) {
                     </div>
                     <div className="w-full relative shadow-lg">
                       <input
-                        type="text"
+                        type={showPassword ? "password" : " text"}
+                        name="password"
+                        value={dataLogin.password}
+                        onChange={(e) => handleChangeInputLogin(e)}
                         placeholder="Nhập Password"
-                        className="w-full  border bg-white rounded-5  px-2 py-2"
+                        className="w-full  border bg-white rounded-5  px-2 py-2 relative"
                       />
+                      {showPassword && (
+                        <span className=" top-0 right-2 absolute h-full flex items-center cursor-pointer ">
+                          <AiFillEyeInvisible
+                            onClick={() => setShowPassword(false)}
+                            className="w-5 h-5 text-gray-400"
+                          />
+                        </span>
+                      )}
+                      {!showPassword && (
+                        <span className=" top-0 right-2 absolute h-full flex items-center cursor-pointer ">
+                          <AiFillEye
+                            onClick={() => setShowPassword(true)}
+                            className="w-5 h-5 text-gray-400"
+                          />
+                        </span>
+                      )}
+
                       <span className="text-sm absolute top-11 left-2 text-red-700">
                         nhập email
                       </span>
@@ -129,7 +167,10 @@ function Login(props) {
                     {/* <button className="rounded w-full px-3 py-2 m-1 border-b-4 border-l-2 text-white shadow-lg bg-primary-500 border-red-500 hover:bg-red-500 hover:border-primary-500 font-medium">
                       Sign In
                     </button> */}
-                    <button className="rounded w-full px-3 py-2 m-1 border-b-4 border-l-2 text-white shadow-lg bg-teal-400 border-teal-600 hover:bg-teal-600 hover:border-teal-400 font-medium">
+                    <button
+                      onClick={(e) => handleLogin(e)}
+                      className="rounded w-full px-3 py-2 m-1 border-b-4 border-l-2 text-white shadow-lg bg-teal-400 border-teal-600 hover:bg-teal-600 hover:border-teal-400 font-medium"
+                    >
                       Sign In
                     </button>
                   </motion.div>

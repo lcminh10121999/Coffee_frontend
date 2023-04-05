@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Link, NavLink } from "react-router-dom";
 import Logo from "../../assets/Logo.png";
@@ -14,8 +14,11 @@ import {
   AiOutlineClose,
   AiOutlineHistory,
 } from "react-icons/ai";
+import { RiProfileLine } from "react-icons/ri";
 import { useState } from "react";
 import ModalStore from "../../components/ModalStore";
+import { useSelector } from "react-redux";
+import { ROUTER_URL } from "../../data/ruotersUrl";
 
 NavBar.propTypes = {};
 
@@ -35,6 +38,17 @@ function NavBar(props) {
   const [showModalStore, setShowModalStore] = useState(false);
   const localStorageStore = localStorage.getItem("storeSeleted");
   const localStorageIdStore = localStorage.getItem("idStoreSeleted");
+
+  const userLogin = useSelector((state) => state.userLogin.userInfo);
+  const userLoginData = JSON.parse(userLogin);
+  const logged = useSelector((state) => state.userLogin.logged);
+  const ref = useRef();
+  const url = ROUTER_URL;
+
+  console.log(userLoginData.name, logged);
+
+  // const userLoginInfo = useSelector((state) => state.userLogin.userInfo);
+  // console.log(userLoginInfo);
 
   const defaultData = [
     {
@@ -63,6 +77,99 @@ function NavBar(props) {
     setStoreSelect(JSON.parse(localStorageIdStore));
     console.log("a");
   }, [localStorageStore, localStorageIdStore]);
+
+  // useEffect(() => {
+  //   // document.body.addEventListener("click", () => {
+  //   //   setOpenUserProfile(false);
+  //   // });
+  // });
+  useEffect(() => {
+    const checkIfClickedOutside = (e) => {
+      // If the menu is open and the clicked target is not within the menu,
+      // then close the menu
+      if (openUserProfile && ref.current && !ref.current.contains(e.target)) {
+        setOpenUserProfile(false);
+      }
+    };
+
+    document.addEventListener("mousedown", checkIfClickedOutside);
+
+    return () => {
+      // Cleanup the event listener
+      document.removeEventListener("mousedown", checkIfClickedOutside);
+    };
+  }, [openUserProfile]);
+  const NavUserLoginInfo = () => {
+    return (
+      <>
+        {!logged && (
+          <div
+            ref={ref}
+            className="- top-10 right-8 shadow-md rounded-md w-60 absolute flex p-4 justify-center items-center flex-col text-black gap-2 bg-white"
+          >
+            <Link
+              onClick={(e) => handleCloseUserProfile(e)}
+              className="flex w-full justify-end hover:text-orange-2"
+            >
+              <AiOutlineClose />
+            </Link>
+            <Link
+              to={url.login}
+              className="flex w-full gap-4 justify-start items-center  hover:text-orange-2"
+            >
+              <AiOutlineUser />
+              <p>Đăng ký/ đăng nhập</p>
+            </Link>
+          </div>
+        )}
+        {logged && (
+          <div
+            ref={ref}
+            className="- top-10 right-8 shadow-md rounded-md w-60 absolute flex p-4 justify-center items-center flex-col text-black gap-2 bg-white"
+          >
+            <div className="flex w-full justify-between">
+              <p className="- font-medium text-lg gap-4 items-center text-primary-500 flex">
+                <AiOutlineUser />
+                {userLoginData.name}
+              </p>
+              <Link
+                onClick={(e) => handleCloseUserProfile(e)}
+                className="hover:text-orange-2"
+              >
+                <AiOutlineClose />
+              </Link>
+            </div>
+
+            <Link
+              to={`/user-info/profile`}
+              className="flex w-full gap-4 justify-start items-center  hover:text-orange-2"
+            >
+              <RiProfileLine />
+              <p>Thông tin tài khoản</p>
+            </Link>
+            <Link
+              to={`/user-info/user-address`}
+              className="flex w-full gap-4 justify-start items-center hover:text-orange-2"
+            >
+              <HiOutlineLocationMarker />
+              <p>Sổ địa chỉ</p>
+            </Link>
+            <Link
+              to={`/user-info/history`}
+              className="flex w-full gap-4 justify-start items-center hover:text-orange-2"
+            >
+              <AiOutlineHistory />
+              <p>Lịch sử giao dịch</p>
+            </Link>
+            <Link className="flex w-full gap-4 justify-start items-center hover:text-orange-2">
+              <BiLogOut />
+              <p>Đăng xuất</p>
+            </Link>
+          </div>
+        )}
+      </>
+    );
+  };
   return (
     <>
       {showModalStore && (
@@ -177,7 +284,7 @@ function NavBar(props) {
               <Link className=" w-full text-xs hover:bg-gray-50">English</Link>
             </p>
           </div>
-          <div className="col-span-1">
+          <div className="col-span-1 relative">
             <div className="lg:justify-between xs:justify-center items-center flex lg:gap-4 xs:gap-2 ">
               <NavLink
                 onClick={(e) => handleOpenUserProfile(e)}
@@ -186,41 +293,7 @@ function NavBar(props) {
                 <HiUserCircle className="lg:w-10 lg:h-10 xs:w-8 h-8" />
               </NavLink>
 
-              {openUserProfile && (
-                <div className="- top-16 right-8 shadow-md rounded-md absolute flex p-4 justify-center items-center flex-col text-black gap-2 bg-white">
-                  <Link
-                    onClick={(e) => handleCloseUserProfile(e)}
-                    className="flex w-full justify-end hover:text-orange-2"
-                  >
-                    <AiOutlineClose />
-                  </Link>
-                  <Link
-                    to={`/user-info/profile`}
-                    className="flex w-full gap-4 justify-start items-center  hover:text-orange-2"
-                  >
-                    <AiOutlineUser />
-                    <p>Thông tin tài khoản</p>
-                  </Link>
-                  <Link
-                    to={`/user-info/user-address`}
-                    className="flex w-full gap-4 justify-start items-center hover:text-orange-2"
-                  >
-                    <HiOutlineLocationMarker />
-                    <p>Sổ địa chỉ</p>
-                  </Link>
-                  <Link
-                    to={`/user-info/history`}
-                    className="flex w-full gap-4 justify-start items-center hover:text-orange-2"
-                  >
-                    <AiOutlineHistory />
-                    <p>Lịch sử giao dịch</p>
-                  </Link>
-                  <Link className="flex w-full gap-4 justify-start items-center hover:text-orange-2">
-                    <BiLogOut />
-                    <p>Đăng xuất</p>
-                  </Link>
-                </div>
-              )}
+              {openUserProfile && <NavUserLoginInfo />}
 
               <NavLink className=" text-white xs:block lg:hidden hover:text-secondary-400 h-full ">
                 <AiOutlineSearch className="lg:w-10 lg:h-10 xs:w-8 h-8 font-light" />

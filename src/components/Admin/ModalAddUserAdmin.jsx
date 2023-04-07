@@ -6,6 +6,9 @@ import ButtonAdmin from "../../common/admin/ButtonAdmin";
 ModalAddUserAdmin.propTypes = {};
 
 function ModalAddUserAdmin(props) {
+
+  const [selectedImage, setSelectedImage] = useState();
+
   return (
     <>
       <div
@@ -32,11 +35,12 @@ function ModalAddUserAdmin(props) {
                   <label class="label">
                     <input type="file" className="upload-avatar" />
                     <figure class="personal-figure w-40 h-40">
-                      <img
+                      {selectedImage ? "" :  <img
                         src="https://cdn.landesa.org/wp-content/uploads/default-user-image.png"
                         class="personal-avatar  w-40 h-40"
                         alt="avatar"
-                      />
+                      />}
+                     
                       <figcaption class="personal-figcaption flex justify-center items-center">
                         <img src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png" />
                       </figcaption>

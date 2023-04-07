@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import LayoutAdmin from "../../Layout/LayoutAdmin";
 import { FaSearch } from "react-icons/fa";
@@ -9,12 +9,38 @@ import ModalAddUserAdmin from "../../components/Admin/ModalAddUserAdmin";
 import ModalUserInforAdmin from "../../components/Admin/ModalUserInforAdmin";
 import ModalUpdateUserADmin from "../../components/Admin/ModalUpdateUserADmin";
 import ButtonAdmin from "../../common/admin/ButtonAdmin";
+import { useDispatch, useSelector } from "react-redux";
+import { getListUser } from "../../actionSlide/userSlide";
+import { getALLUser } from "../../services/userServices";
+import InfiniteScroll from "react-infinite-scroll-component";
 UsersList.propTypes = {};
 
 function UsersList(props) {
   const [showModalAdd, setShowModalAdd] = useState(false);
   const [showModalInfo, setShowModalInfo] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
+  const dispatch = useDispatch();
+  const listUser = useSelector((state) => state.userActionSlide.userList);
+  const hasMore = useSelector((state) => state.userActionSlide.hasMore);
+  const [userInfo, setUserInfo] = useState({});
+  const [offset, setOffset] = useState(1);
+  console.log(hasMore);
+
+  useEffect(() => {
+    if (offset === 1) {
+      dispatch(getListUser({ id: "ALL", limit: 20, page: offset }));
+      // getALLUser({ id: "ALL", limit: 20 });
+      setOffset(offset + 1);
+    }
+  }, []);
+
+  const handleGetMoreUser = () => {
+    if (hasMore) {
+      dispatch(getListUser({ id: "ALL", limit: 20, page: offset }));
+      setOffset(offset + 1);
+    }
+  };
+
   return (
     <LayoutAdmin>
       {showModalAdd && (
@@ -27,6 +53,7 @@ function UsersList(props) {
         <ModalUserInforAdmin
           setShowModalInfo={setShowModalInfo}
           showModalInfo={showModalInfo}
+          userInfo={userInfo}
         />
       )}
       {showModalEdit && (
@@ -62,58 +89,53 @@ function UsersList(props) {
           onClickButton={() => setShowModalAdd(true)}
         />
       </div>
-      <div className="flex w-full flex-wrap pr-12">
-        <div className="w-1/4 ">
-          <CardUsersAdmin
-            setShowModalInfo={setShowModalInfo}
-            showModalInfo={showModalInfo}
-            setShowModalEdit={setShowModalEdit}
-          />
-        </div>
-        <div className="w-1/4 ">
-          <CardUsersAdmin
-            setShowModalInfo={setShowModalInfo}
-            showModalInfo={showModalInfo}
-            setShowModalEdit={setShowModalEdit}
-          />
-        </div>
-        <div className="w-1/4 ">
-          <CardUsersAdmin
-            setShowModalInfo={setShowModalInfo}
-            showModalInfo={showModalInfo}
-            setShowModalEdit={setShowModalEdit}
-          />
-        </div>
+      {/* <div className="flex w-full flex-wrap pr-12"> */}
+      {/* {listUser && listUser.length > 0
+          ? listUser.map((item, index) => {
+              const count = ++index;
 
-        <div className="w-1/4 ">
-          <CardUsersAdmin
-            setShowModalInfo={setShowModalInfo}
-            showModalInfo={showModalInfo}
-            setShowModalEdit={setShowModalEdit}
-          />
+              return (
+                <div className="w-1/4 ">
+                  <CardUsersAdmin
+                    count={count}
+                    userInfo={item}
+                    setUserInfo={setUserInfo}
+                    setShowModalInfo={setShowModalInfo}
+                    showModalInfo={showModalInfo}
+                    setShowModalEdit={setShowModalEdit}
+                  />
+                </div>
+              );
+            })
+          : "null"} */}
+
+      {/* <p onClick={() => handleGetMoreUser()}>show more</p> */}
+      {/* </div> */}
+      <InfiniteScroll
+        dataLength={listUser.length}
+        next={handleGetMoreUser}
+        hasMore={hasMore}
+        loader={<h4>Loading...</h4>}
+      >
+        <div className="flex w-full flex-wrap pr-12">
+          {listUser.map((item, index) => {
+            const count = ++index;
+
+            return (
+              <div className="w-1/4 ">
+                <CardUsersAdmin
+                  count={count}
+                  userInfo={item}
+                  setUserInfo={setUserInfo}
+                  setShowModalInfo={setShowModalInfo}
+                  showModalInfo={showModalInfo}
+                  setShowModalEdit={setShowModalEdit}
+                />
+              </div>
+            );
+          })}
         </div>
-        <div className="w-1/4 ">
-          <CardUsersAdmin
-            setShowModalInfo={setShowModalInfo}
-            showModalInfo={showModalInfo}
-            setShowModalEdit={setShowModalEdit}
-          />
-        </div>
-        <div className="w-1/4 ">
-          <CardUsersAdmin
-            setShowModalInfo={setShowModalInfo}
-            showModalInfo={showModalInfo}
-            setShowModalEdit={setShowModalEdit}
-          />
-        </div>
-        <div className="w-1/4 ">
-          <CardUsersAdmin
-            setShowModalInfo={setShowModalInfo}
-            showModalInfo={showModalInfo}
-            setShowModalEdit={setShowModalEdit}
-          />
-        </div>
-      </div>
+      </InfiniteScroll>
     </LayoutAdmin>
   );
 }

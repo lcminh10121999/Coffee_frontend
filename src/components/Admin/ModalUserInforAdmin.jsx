@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import InputAdmin from "../../common/admin/InputAdmin";
 import { AiOutlineClose } from "react-icons/ai";
 import LabelTextAdmin from "../../common/admin/LabelTextAdmin";
-
+import moment from "moment";
 ModalUserInforAdmin.propTypes = {};
 
 function ModalUserInforAdmin(props) {
@@ -34,7 +34,7 @@ function ModalUserInforAdmin(props) {
                     <input type="file" className="upload-avatar" />
                     <figure class="personal-figure w-40 h-40">
                       <img
-                        src="https://cdn.landesa.org/wp-content/uploads/default-user-image.png"
+                        src={props.userInfo.image}
                         class="personal-avatar  w-40 h-40"
                         alt="avatar"
                       />
@@ -51,7 +51,7 @@ function ModalUserInforAdmin(props) {
                     alt=""
                   />
                   <p className="- absolute top-2 lg:left-4 xs:left-6 text-lg font-medium text-white ">
-                    Lê Công Minh
+                    {props.userInfo.name}
                   </p>
                   <p className="- absolute top-10 lg:left-4 xs:left-6 text-base text-white font-normal">
                     1000 Coins
@@ -59,17 +59,33 @@ function ModalUserInforAdmin(props) {
                 </div>
               </div>
               <div className="w-2/3 flex pl-10 flex-col">
-                <LabelTextAdmin label="Mã Khách hàng" text="KH-00001" />
-
-                <LabelTextAdmin label="Họ tên" text="Lê Công Minh" />
-                <LabelTextAdmin label="Só điện thoại" text="0704549000" />
-                <LabelTextAdmin label="Ngày sinh" text="10/12/1999" />
-                <LabelTextAdmin label="Giói tính" text="Nam" />
-                <LabelTextAdmin label="Email" text="lcminh@gmail.com" />
                 <LabelTextAdmin
-                  label="Địa chỉ"
-                  text="La thọ 2 Điện Hòa Điện Bàn Quảng Nam"
+                  label="Mã Khách hàng"
+                  text={`KH-${props.userInfo.id}`}
                 />
+
+                <LabelTextAdmin label="Họ tên" text={props.userInfo.name} />
+                <LabelTextAdmin
+                  label="Só điện thoại"
+                  text={props.userInfo.phone}
+                />
+                <LabelTextAdmin
+                  label="Ngày sinh"
+                  text={moment(props.userInfo.birthday).format("DD/MM/YYYY")}
+                />
+
+                <div className="w-full mb-4 pb-2 border-b border-gray-200 flex gap-2">
+                  <div className="w-full flex gap-2 items-center">
+                    <label htmlFor="" className="- font-medium">
+                      Giói tính
+                    </label>
+                    <p className="text-sm">
+                      {props.userInfo.gender === 1 ? "Nam" : "Nữ"}
+                    </p>
+                  </div>
+                </div>
+                <LabelTextAdmin label="Email" text={props.userInfo.email} />
+                <LabelTextAdmin label="Địa chỉ" text={props.userInfo.address} />
                 <LabelTextAdmin label="Hạng thẻ" text="Platium" />
                 <LabelTextAdmin label="Điểm tích lũy" text="1000" />
               </div>

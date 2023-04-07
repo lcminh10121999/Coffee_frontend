@@ -7,20 +7,26 @@ CardUsersAdmin.propTypes = {};
 
 function CardUsersAdmin(props) {
   const color = DATA_COLOR_BG_CARD_ADMIN;
+  // bg-slate-400
+  const handleShowUserInfo = () => {
+    props.setUserInfo(props.userInfo);
+    props.setShowModalInfo(true);
+  };
   return (
-    <div className="text-center  p-4">
-      <div className=" shadow-image rounded-5 flex flex-col">
+    <div className="text-center p-4">
+      <div className=" shadow-image rounded-5 h-52 justify-between flex flex-col">
         <div
-          className={`rounded-t-5 h-20 w-full flex justify-center relative ${color
-            .sort(() => Math.random() - Math.random())
-            .slice(0, 1)}`}
+          className={`rounded-t-5 h-20 w-full flex justify-center relative  \
+         
+          ${color.sort(() => Math.random() - Math.random()).slice(0, 1)}
+       `}
         >
           <p className="absolute left-3 top-2 text-lg font-medium text-white">
-            1
+            {props.count}
           </p>
           <img
-            onClick={() => props.setShowModalInfo(true)}
-            src="https://cdn.landesa.org/wp-content/uploads/default-user-image.png"
+            onClick={() => handleShowUserInfo()}
+            src={props.userInfo.image}
             alt="category logo"
             className="max-h-24 absolute top-5 rounded-full cursor-pointer"
           />
@@ -35,17 +41,16 @@ function CardUsersAdmin(props) {
           <div className="flex absolute  left-3 bottom-3 gap-2">
             <p
               className="text-xs text-blue-600 cursor-pointer hover:text-blue-800 "
-              onClick={() => props.setShowModalInfo(true)}
+              onClick={() => handleShowUserInfo()}
             >
-              # KH-00001
+              # KH-{props.userInfo.id}
             </p>
           </div>
           <p
             className="text-lg text-orange-1 hover:text-orange-2 font-medium cursor-pointer"
-            onClick={() => props.setShowModalInfo(true)}
+            onClick={() => handleShowUserInfo()}
           >
-            {" "}
-            Lê Công Minh
+            {props.userInfo.name}
           </p>
         </div>
       </div>

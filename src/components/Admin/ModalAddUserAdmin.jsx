@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import InputAdmin from "../../common/admin/InputAdmin";
 import { AiOutlineClose } from "react-icons/ai";
@@ -6,9 +6,34 @@ import ButtonAdmin from "../../common/admin/ButtonAdmin";
 ModalAddUserAdmin.propTypes = {};
 
 function ModalAddUserAdmin(props) {
-
   const [selectedImage, setSelectedImage] = useState();
 
+  const [selectedFile, setSelectedFile] = useState();
+  const [preview, setPreview] = useState();
+
+  // create a preview as a side effect, whenever selected file is changed
+  useEffect(() => {
+    if (!selectedFile) {
+      setPreview(undefined);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreview(objectUrl);
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedFile]);
+
+  const onSelectFile = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedFile(undefined);
+      return;
+    }
+
+    // I've kept this example simple by using the first image instead of multiple
+    setSelectedFile(e.target.files[0]);
+  };
   return (
     <>
       <div
@@ -33,16 +58,31 @@ function ModalAddUserAdmin(props) {
               <div className="w-1/4 flex items-start justify-center">
                 <div class="personal-image ">
                   <label class="label">
-                    <input type="file" className="upload-avatar" />
+                    <input
+                      type="file"
+                      onChange={onSelectFile}
+                      className="upload-avatar"
+                    />
                     <figure class="personal-figure w-40 h-40">
-                      {selectedImage ? "" :  <img
-                        src="https://cdn.landesa.org/wp-content/uploads/default-user-image.png"
-                        class="personal-avatar  w-40 h-40"
-                        alt="avatar"
-                      />}
-                     
+                      {preview ? (
+                        <img
+                          src={preview}
+                          class="personal-avatar  w-40 h-40"
+                          alt="avatar"
+                        />
+                      ) : (
+                        <img
+                          src="https://cdn.landesa.org/wp-content/uploads/default-user-image.png"
+                          class="personal-avatar  w-40 h-40"
+                          alt="avatar"
+                        />
+                      )}
+
                       <figcaption class="personal-figcaption flex justify-center items-center">
-                        <img src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png" />
+                        <img
+                          src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png"
+                          alt="logo"
+                        />
                       </figcaption>
                     </figure>
                   </label>
@@ -94,25 +134,17 @@ function ModalAddUserAdmin(props) {
                 <div className="w-full flex flex-col gap-4">
                   <div className="w-full  flex gap-2">
                     <div className="w-1/2">
-                      <label className=" flex mb-2" htmlFor="">
-                        Tỉnh/ Thành phố{" "}
-                        <span className="pl-1 text-primary-500">*</span>
-                      </label>
-                      <select
-                        className="border w-full shadow-md text-sm border-gray-300  rounded-5 py-2 px-2 "
-                        name=""
-                        id=""
-                      >
-                        <option className="py-4 px-2" value="">
-                          Đà Nẳng
-                        </option>
-                        <option value="">Quản Nam</option>
-                        <option value="">HCM</option>
-                      </select>
+                      <InputAdmin
+                        name="name"
+                        type="date"
+                        placeholder="Nhập mật khẩu"
+                        label="  Sinh nhật"
+                        requireSpan="*"
+                      />
                     </div>
                     <div className="w-1/2">
                       <label className=" flex mb-2" htmlFor="">
-                        Quận/ Huyện{" "}
+                        Trạng thái
                         <span className="pl-1 text-primary-500">*</span>
                       </label>
                       <select
@@ -120,30 +152,10 @@ function ModalAddUserAdmin(props) {
                         name=""
                         id=""
                       >
-                        <option className="py-4 px-2" value="">
-                          Đà Nẳng
+                        <option value="1">Kích hoạt</option>
+                        <option className="2" value="  Điện Bàn">
+                          Không Kich Hoạt
                         </option>
-                        <option value="">Quản Nam</option>
-                        <option value="">HCM</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="w-full  flex gap-2">
-                    <div className="w-1/2">
-                      <label className=" flex mb-2" htmlFor="">
-                        Quận/ Huyện{" "}
-                        <span className="pl-1 text-primary-500">*</span>
-                      </label>
-                      <select
-                        className="border w-full shadow-md text-sm border-gray-300  rounded-5 py-2 px-2 "
-                        name=""
-                        id=""
-                      >
-                        <option className="py-4 px-2" value="">
-                          Đà Nẳng
-                        </option>
-                        <option value="">Quản Nam</option>
-                        <option value="">HCM</option>
                       </select>
                     </div>
                   </div>
@@ -152,8 +164,8 @@ function ModalAddUserAdmin(props) {
                     <InputAdmin
                       name="name"
                       type="text"
-                      placeholder="Nhập địa chỉ cụ thể"
-                      label="Địa chỉ cụ thể"
+                      placeholder="Nhập địa chỉ"
+                      label="Địa chỉ"
                       requireSpan="*"
                     />
                   </div>
@@ -175,24 +187,20 @@ function ModalAddUserAdmin(props) {
                       </select>
                     </div>
                     <div className="w-1/2 pl-4">
-                      <p className="mb-4">
-                        Giới tính<span className="text-red-500"> *</span>
-                      </p>
-                      <div className="w-full flex gap-8">
-                        <div>
-                          <input
-                            type="radio"
-                            checked
-                            name="sex"
-                            className="mr-1"
-                          />
-                          <span>Nam</span>
-                        </div>
-                        <div>
-                          <input type="radio" name="sex" className="mr-1" />
-                          <span>Nữ</span>
-                        </div>
-                      </div>
+                      <label className=" flex mb-2" htmlFor="">
+                        Giới tính{" "}
+                        <span className="pl-1 text-primary-500">*</span>
+                      </label>
+                      <select
+                        className="border w-full shadow-md text-sm border-gray-300  rounded-5 py-2 px-2 "
+                        name=""
+                        id=""
+                      >
+                        <option className="py-4 px-2" value="1">
+                          Nam
+                        </option>
+                        <option value="2">Nữ</option>
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -201,11 +209,15 @@ function ModalAddUserAdmin(props) {
           </div>
           <div className="w-full flex gap-4 justify-center text-white">
             <ButtonAdmin
-              style="bg-orange-1 border-orange-2 hover:bg-orange-2 hover:border-orange-1   "
+              style={
+                "bg-orange-1 border-orange-2 hover:bg-orange-2 hover:border-orange-1"
+              }
               text="Tạo mới"
             />
             <ButtonAdmin
-              style="bg-primary-500 border-red-500 hover:bg-red-500 hover:border-primary-500 "
+              style={
+                "bg-primary-500 border-red-500 hover:bg-red-500 hover:border-primary-500 "
+              }
               text=" Hủy"
               onClickButton={() => props.setShowModalAdd(false)}
             />

@@ -24,12 +24,21 @@ function CardUsersAdmin(props) {
           <p className="absolute left-3 top-2 text-lg font-medium text-white">
             {props.count}
           </p>
-          <img
-            onClick={() => handleShowUserInfo()}
-            src={props.userInfo.image}
-            alt="category logo"
-            className="max-h-24 absolute top-5 rounded-full cursor-pointer"
-          />
+          {props.userInfo.image ? (
+            <img
+              onClick={() => handleShowUserInfo()}
+              src={props.userInfo.image}
+              alt="category logo"
+              className="max-h-24 absolute top-5 rounded-full cursor-pointer"
+            />
+          ) : (
+            <img
+              src="https://cdn.landesa.org/wp-content/uploads/default-user-image.png"
+              class="max-h-24 absolute top-5 rounded-full cursor-pointer"
+              onClick={() => handleShowUserInfo()}
+              alt="avatar"
+            />
+          )}
         </div>
         <div className="pt-11 pb-8 relative">
           <div className="flex absolute  right-2 bottom-3 gap-2">

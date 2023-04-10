@@ -362,10 +362,11 @@ function Login(props) {
                         nhập email
                       </span>
                     </div>
+
                     <div className="w-full relative shadow-lg">
                       <input
                         type="text"
-                        placeholder="Nhập lại Password"
+                        placeholder="Nhập Só Điện Thoại"
                         className="w-full border bg-white rounded-5  px-2 py-2"
                       />
                       <span className="text-sm absolute top-11 left-2 text-red-700">

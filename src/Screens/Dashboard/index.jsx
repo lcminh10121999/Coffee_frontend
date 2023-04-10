@@ -7,6 +7,7 @@ import SideBar from "./SideBar";
 import UserSideBart from "./UserSideBart";
 import { TbNews } from "react-icons/tb";
 import { CiGlass } from "react-icons/ci";
+import { useSelector } from "react-redux";
 
 DashBoard.propTypes = {};
 
@@ -16,6 +17,9 @@ function DashBoard(props) {
   const location = useLocation();
   const slug = location.pathname;
   const params = useParams();
+  const userLogin = useSelector((state) => state.userLogin.userInfo);
+  const [userLoginData, setUserLoginData] = useState({});
+  const logged = useSelector((state) => state.userLogin.logged);
 
   console.log("param ", params.id, "name ", params.name);
   console.log("slug ", slug);
@@ -39,12 +43,20 @@ function DashBoard(props) {
       setChangeActivate(3);
     }
   }, [slug]);
+  useEffect(() => {
+    if (userLogin.length !== 0) {
+      const data = JSON.parse(userLogin);
+      setUserLoginData(data);
+    }
+  }, []);
   return (
     <>
       <SideBar openSideBar={openSideBar} setOpenSideBar={setOpenSideBar} />
       <UserSideBart
         openUserSideBar={openUserSideBar}
         setOpenUserSideBar={setOpenUserSideBar}
+        userLoginData={userLoginData}
+        logged={logged}
       />
       <div className="bg-gray-200 text-black px-4 py-2 lg:hidden xs:flex sticky bottom-0 z-20  w-full">
         <div className="w-full flex flex-wrap justify-between">

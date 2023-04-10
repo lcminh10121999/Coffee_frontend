@@ -30,17 +30,22 @@ function ModalUserInforAdmin(props) {
             <div className="flex gap-4 flex-row ">
               <div className="w-1/3 flex flex-col  items-center justify-start gap-8">
                 <div class="personal-image">
-                  <label class="label">
+                  <label className="label">
                     <input type="file" className="upload-avatar" />
-                    <figure class="personal-figure w-40 h-40">
-                      <img
-                        src={props.userInfo.image}
-                        class="personal-avatar  w-40 h-40"
-                        alt="avatar"
-                      />
-                      <figcaption class="personal-figcaption flex justify-center items-center">
-                        <img src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png" />
-                      </figcaption>
+                    <figure className="personal-figure w-40 h-40">
+                      {props.userInfo.image ? (
+                        <img
+                          src={props.userInfo.image}
+                          alt="category logo"
+                          className="personal-avatar-info  w-40 h-40"
+                        />
+                      ) : (
+                        <img
+                          src="https://cdn.landesa.org/wp-content/uploads/default-user-image.png"
+                          className="personal-avatar-info  w-40 h-40"
+                          alt="avatar"
+                        />
+                      )}
                     </figure>
                   </label>
                 </div>
@@ -77,7 +82,7 @@ function ModalUserInforAdmin(props) {
                 <div className="w-full mb-4 pb-2 border-b border-gray-200 flex gap-2">
                   <div className="w-full flex gap-2 items-center">
                     <label htmlFor="" className="- font-medium">
-                      Giói tính
+                      Giói tính:
                     </label>
                     <p className="text-sm">
                       {props.userInfo.gender === 1 ? "Nam" : "Nữ"}
@@ -86,6 +91,18 @@ function ModalUserInforAdmin(props) {
                 </div>
                 <LabelTextAdmin label="Email" text={props.userInfo.email} />
                 <LabelTextAdmin label="Địa chỉ" text={props.userInfo.address} />
+                <div className="w-full mb-4 pb-2 border-b border-gray-200 flex gap-2">
+                  <div className="w-full flex gap-2 items-center">
+                    <label htmlFor="" className="- font-medium">
+                      Trạng thái:
+                    </label>
+                    <p className="text-sm">
+                      {props.userInfo.status === 1
+                        ? "Kích hoạt"
+                        : "Không kích hoạt"}
+                    </p>
+                  </div>
+                </div>
                 <LabelTextAdmin label="Hạng thẻ" text="Platium" />
                 <LabelTextAdmin label="Điểm tích lũy" text="1000" />
               </div>

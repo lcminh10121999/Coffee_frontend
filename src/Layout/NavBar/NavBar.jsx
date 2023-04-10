@@ -40,12 +40,14 @@ function NavBar(props) {
   const localStorageIdStore = localStorage.getItem("idStoreSeleted");
 
   const userLogin = useSelector((state) => state.userLogin.userInfo);
-  const userLoginData = JSON.parse(userLogin);
+
+  const [userLoginData, setUserLoginData] = useState({});
+
   const logged = useSelector((state) => state.userLogin.logged);
   const ref = useRef();
   const url = ROUTER_URL;
 
-  console.log(userLoginData.name, logged);
+  console.log(userLogin);
 
   // const userLoginInfo = useSelector((state) => state.userLogin.userInfo);
   // console.log(userLoginInfo);
@@ -78,11 +80,13 @@ function NavBar(props) {
     console.log("a");
   }, [localStorageStore, localStorageIdStore]);
 
-  // useEffect(() => {
-  //   // document.body.addEventListener("click", () => {
-  //   //   setOpenUserProfile(false);
-  //   // });
-  // });
+  useEffect(() => {
+    if (userLogin.length !== 0) {
+      const data = JSON.parse(userLogin);
+      setUserLoginData(data);
+    }
+  }, []);
+  console.log(userLoginData);
   useEffect(() => {
     const checkIfClickedOutside = (e) => {
       // If the menu is open and the clicked target is not within the menu,
@@ -128,10 +132,13 @@ function NavBar(props) {
             className="- top-10 right-8 shadow-md rounded-md w-60 absolute flex p-4 justify-center items-center flex-col text-black gap-2 bg-white"
           >
             <div className="flex w-full justify-between">
-              <p className="- font-medium text-lg gap-4 items-center text-primary-500 flex">
-                <AiOutlineUser />
-                {userLoginData.name}
-              </p>
+              {userLoginData && (
+                <p className="- font-medium text-lg gap-4 items-center text-primary-500 flex">
+                  <AiOutlineUser />
+                  userLoginData.name
+                </p>
+              )}
+
               <Link
                 onClick={(e) => handleCloseUserProfile(e)}
                 className="hover:text-orange-2"

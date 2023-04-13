@@ -17,8 +17,12 @@ import {
 import { RiProfileLine } from "react-icons/ri";
 import { useState } from "react";
 import ModalStore from "../../components/ModalStore";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ROUTER_URL } from "../../data/ruotersUrl";
+import { loginSlide } from "../../actionSlide/loginSlide";
+import { easeInOut } from "framer-motion";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 NavBar.propTypes = {};
 
@@ -46,7 +50,7 @@ function NavBar(props) {
   const logged = useSelector((state) => state.userLogin.logged);
   const ref = useRef();
   const url = ROUTER_URL;
-
+  const dispatch = useDispatch();
   console.log(userLogin);
 
   // const userLoginInfo = useSelector((state) => state.userLogin.userInfo);
@@ -86,7 +90,7 @@ function NavBar(props) {
       setUserLoginData(data);
     }
   }, []);
-  console.log(userLoginData);
+
   useEffect(() => {
     const checkIfClickedOutside = (e) => {
       // If the menu is open and the clicked target is not within the menu,
@@ -103,6 +107,32 @@ function NavBar(props) {
       document.removeEventListener("mousedown", checkIfClickedOutside);
     };
   }, [openUserProfile]);
+
+  const toastError = () =>
+    toast.success("Đăng xuất thành công!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("userLogin");
+    localStorage.setItem("logged", false);
+    sessionStorage.removeItem("userLogin");
+    sessionStorage.setItem("logged", false);
+    dispatch(loginSlide.actions.setLogged(false));
+    dispatch(loginSlide.actions.setUserLogout());
+    dispatch(loginSlide.actions.setUserInfoLogout());
+    toastError();
+    setOpenUserProfile(false);
+  };
+
   const NavUserLoginInfo = () => {
     return (
       <>
@@ -135,7 +165,7 @@ function NavBar(props) {
               {userLoginData && (
                 <p className="- font-medium text-lg gap-4 items-center text-primary-500 flex">
                   <AiOutlineUser />
-                  userLoginData.name
+                  {userLoginData.name}
                 </p>
               )}
 
@@ -168,7 +198,10 @@ function NavBar(props) {
               <AiOutlineHistory />
               <p>Lịch sử giao dịch</p>
             </Link>
-            <Link className="flex w-full gap-4 justify-start items-center hover:text-orange-2">
+            <Link
+              onClick={(e) => handleLogout(e)}
+              className="flex w-full gap-4 justify-start items-center hover:text-orange-2"
+            >
               <BiLogOut />
               <p>Đăng xuất</p>
             </Link>
@@ -179,6 +212,7 @@ function NavBar(props) {
   };
   return (
     <>
+      <ToastContainer />
       {showModalStore && (
         <ModalStore
           setShowModalStore={setShowModalStore}

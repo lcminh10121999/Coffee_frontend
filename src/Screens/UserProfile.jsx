@@ -8,15 +8,31 @@ import {
   AiOutlineHistory,
 } from "react-icons/ai";
 import { BsCameraFill } from "react-icons/bs";
-import { Link, NavLink, useLocation, useParams } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { HiUserCircle, HiOutlineLocationMarker } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserLoggedById } from "../actionSlide/loginSlide";
 UserProfile.propTypes = {};
 
 function UserProfile({ children }) {
   const location = useLocation();
   const slug = location.pathname;
-
+  const userLogged = useSelector((state) => state.userLogin.logged);
+  const userLogin = useSelector((state) => state.userLogin.userInfo);
+  const userLoggedLoading = useSelector(
+    (state) => state.userLogin.loadingGetUserInfo
+  );
   const [changeActivate, setChangeActivate] = useState(0);
+  const loggedLocalStore = localStorage.getItem("logged");
+  const loggedSessionStore = sessionStorage.getItem("logged");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   useEffect(() => {
     if (slug == "/user-info/profile") {
       setChangeActivate(1);
@@ -25,7 +41,20 @@ function UserProfile({ children }) {
     } else if (slug == "/user-info/user-address") {
       setChangeActivate(3);
     }
-  }, [slug]);
+
+    if (userLogged && userLogin.length !== 0 && userLoggedLoading === "idle") {
+      const data = JSON.parse(userLogin);
+      dispatch(getUserLoggedById(data.id));
+    }
+
+    if (
+      JSON.parse(loggedLocalStore) !== true &&
+      JSON.parse(loggedSessionStore) !== true &&
+      !userLogged
+    ) {
+      navigate("/", { replace: true });
+    }
+  }, [slug, userLogged]);
 
   return (
     <Layout>

@@ -21,9 +21,6 @@ function DashBoard(props) {
   const [userLoginData, setUserLoginData] = useState({});
   const logged = useSelector((state) => state.userLogin.logged);
 
-  console.log("param ", params.id, "name ", params.name);
-  console.log("slug ", slug);
-
   const [changeActivate, setChangeActivate] = useState(0);
   useEffect(() => {
     if (

@@ -43,6 +43,7 @@ module.exports = {
       height: {
         header: '560px',
         rate: '400px',
+        "82": "20.5rem",
         "100": "25rem",
         "150": "30rem",
         "20vh": "20vh",

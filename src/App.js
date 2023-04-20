@@ -31,7 +31,7 @@ function App() {
         <Route path={url.login} element={<Login />}></Route>
         <Route path="*" element={<NotFoundPage />} />
         <Route path={url.product} element={<Menu />} />
-        <Route path="/product/:id/:name" element={<ProductDetail />}></Route>
+        <Route path="/product/:name" element={<ProductDetail />}></Route>
         <Route path={url.cart} element={<CartHome />}></Route>
         <Route path={url.checkout} element={<CheckOut />}></Route>
         <Route path={url.new} element={<News />} />

@@ -30,7 +30,6 @@ NavBar.propTypes = {};
 
 function NavBar(props) {
   const [openUserProfile, setOpenUserProfile] = useState(false);
-  console.log(openUserProfile);
   const handleOpenUserProfile = (e) => {
     e.preventDefault();
     setOpenUserProfile(true);
@@ -51,7 +50,6 @@ function NavBar(props) {
   const ref = useRef();
   const url = ROUTER_URL;
   const dispatch = useDispatch();
-  console.log(userLogin);
 
   // const userLoginInfo = useSelector((state) => state.userLogin.userInfo);
   // console.log(userLoginInfo);
@@ -81,7 +79,6 @@ function NavBar(props) {
   useEffect(() => {
     setStoreSelected(JSON.parse(localStorageStore));
     setStoreSelect(JSON.parse(localStorageIdStore));
-    console.log("a");
   }, [localStorageStore, localStorageIdStore]);
 
   useEffect(() => {

@@ -5,15 +5,23 @@ import { Link } from "react-router-dom";
 CardCategory.propTypes = {};
 
 function CardCategory(props) {
+  const data = props.data;
+
   return (
-    <div className="text-center p-4">
-      <Link className="hover:text-primary-300">
-        <img
-          src="https://minio.thecoffeehouse.com/image/admin/1676431475_caphe.png"
-          alt="category logo"
-        />
-        <p className="text-sm">Tea</p>
-      </Link>
+    <div className="text-center flex flex-col items-center p-4">
+      <div className="hover:text-primary-500 cursor-pointer">
+        <div
+          onClick={(e) => props.handleGetListProductByCategoryID(e, data.id)}
+          className="w-full flex justify-between flex-col items-center"
+        >
+          <img
+            src={data.image}
+            alt="category logo"
+            className="w-16 h-16 rounded-full"
+          />
+          <p className="text-sm mt-2 font-semibold text-center">{data.name}</p>
+        </div>
+      </div>
     </div>
   );
 }

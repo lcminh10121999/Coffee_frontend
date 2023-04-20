@@ -9,15 +9,15 @@ export const BANNER_IMAGE = [
 
     {
         name: "banner 1",
-        image: "https://minio.thecoffeehouse.com/image/admin/1675182629_keothom-web.jpg",
+        image: "https://minio.thecoffeehouse.com/image/admin/1681404421_banner-web-cu.jpg",
     },
     {
         name: "banner 2",
-        image: "https://minio.thecoffeehouse.com/image/admin/1675182629_keothom-web.jpg",
+        image: "https://minio.thecoffeehouse.com/image/admin/1681110452_banner-web-cu.jpg",
     },
     {
         name: "banner 3",
-        image: "https://minio.thecoffeehouse.com/image/admin/1675183110_combo89-web.jpg",
+        image: "https://minio.thecoffeehouse.com/image/admin/1680286622_banner-web.jpg",
     },
     {
         name: "banner 4",
@@ -25,7 +25,7 @@ export const BANNER_IMAGE = [
     },
     {
         name: "banner 5",
-        image: "https://minio.thecoffeehouse.com/image/admin/1672807776_freeship-web.jpg",
+        image: "https://minio.thecoffeehouse.com/image/admin/1680286925_banner-web-2.jpg",
     },
 ];
 

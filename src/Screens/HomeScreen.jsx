@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Layout from "../Layout/Layout";
 import Card from "../components/Card";
-import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import "../../src/styles/HomeScreen.css";
 import CardCategory from "../components/CardCategory";
 import Banner from "../components/Banner";
@@ -13,6 +12,18 @@ import ButtonProject from "../common";
 import { BsArrowRight } from "react-icons/bs";
 import CardInformation from "../components/CardInformation";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getCategory } from "../actionSlide/categorySlide";
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/pagination";
+import {
+  LIMIT_LIST_PRODUCT,
+  OFFSET_LIST_PRODUCT,
+} from "../constant/constantListProduct";
+import { getListProductSlide, productSlide } from "../actionSlide/productSlide";
+import { HashLoader } from "react-spinners";
+import { ROUTER_URL } from "../data/ruotersUrl";
 HomeScreen.propTypes = {};
 
 function HomeScreen(props) {
@@ -21,6 +32,87 @@ function HomeScreen(props) {
   const classNameBannerImage = "rounded-md";
   const classNameBannerTop =
     "lg:p-8 xs:p-4 bg-gradient-to-r from-orange-2 to-orange-1";
+  const dispatch = useDispatch();
+  const url = ROUTER_URL;
+  const loadingCategory = useSelector((state) => state.category.loading);
+  const listCategory = useSelector((state) => state.category.listCategory);
+  const [categoryId, setCategoryId] = useState("ALL");
+  const limit = LIMIT_LIST_PRODUCT;
+  const offsetProduct = useSelector(
+    (state) => state.product.productList.offset
+  );
+  const [offset, setOffset] = useState(offsetProduct);
+  const listProductByCategoryId = useSelector(
+    (state) => state.product.productList.data
+  );
+  const loadingListProduct = useSelector(
+    (state) => state.product.productList.loading
+  );
+  const hasMore = useSelector((state) => state.product.productList.hasMore);
+
+  const handleGetListProductByCategoryID = (e, categoryId) => {
+    // e.preventdefault();
+    setCategoryId(categoryId);
+    dispatch(
+      getListProductSlide({
+        id: categoryId,
+        limit: limit,
+        page: 1,
+      })
+    );
+    setOffset(2);
+    dispatch(productSlide.actions.setOffSetProduct(2));
+  };
+  useEffect(() => {
+    if (loadingCategory === "idle") {
+      dispatch(getCategory());
+    }
+    if (
+      categoryId === "ALL" &&
+      listProductByCategoryId.length === 0 &&
+      !loadingListProduct
+    ) {
+      dispatch(
+        getListProductSlide({
+          id: "ALL",
+          limit: limit,
+          page: 1,
+        })
+      );
+      setOffset(offset + 1);
+      dispatch(productSlide.actions.setOffSetProduct(offset + 1));
+    }
+    if (
+      categoryId === "ALL" &&
+      listProductByCategoryId.length === 0 &&
+      !loadingListProduct
+    ) {
+      dispatch(
+        getListProductSlide({
+          id: "ALL",
+          limit: limit,
+          page: 1,
+        })
+      );
+      setOffset(offset + 1);
+      dispatch(productSlide.actions.setOffSetProduct(offset + 1));
+    }
+    if (
+      categoryId === "ALL" &&
+      listProductByCategoryId.length > limit &&
+      !loadingListProduct
+    ) {
+      dispatch(
+        getListProductSlide({
+          id: "ALL",
+          limit: limit,
+          page: 1,
+        })
+      );
+      setOffset(2);
+      dispatch(productSlide.actions.setOffSetProduct(2));
+    }
+  }, [loadingCategory]);
 
   return (
     <Layout>
@@ -43,7 +135,7 @@ function HomeScreen(props) {
           <div className="flex flex-wrap w-full mt-6">
             <div className=" lg:w-2/4 xs:w-full p-4">
               <img
-                src="https://file.hstatic.net/1000075078/file/highlight_cc022d45647d43e9bfbe1248b4573788.jpg"
+                src="https://file.hstatic.net/1000075078/file/banner_app_73261cd5c5e04d5284928a7cb1a052a9.jpg"
                 alt=""
                 className=" shadow-image rounded-md "
               />
@@ -54,6 +146,13 @@ function HomeScreen(props) {
                 class_name_top="shadow-image"
                 class_name_border="lg:h-96"
                 class_name_name_product="font-semibold text-md"
+                data={{
+                  id: 2,
+                  name: "Hồng Trà Sữa Nóng",
+                  price: 100000,
+                  image:
+                    "https://minio.thecoffeehouse.com/image/admin/1681368048_kombucha-yuzu-new_400x400.jpg",
+                }}
               />
             </div>
             <div className="lg:w-1/4 xs:w-1/2 ">
@@ -62,6 +161,13 @@ function HomeScreen(props) {
                 class_name_top="shadow-image"
                 class_name_border="lg:h-96"
                 class_name_name_product="font-semibold text-md"
+                data={{
+                  id: 2,
+                  name: "Hồng Trà Sữa Nóng",
+                  price: 100000,
+                  image:
+                    "https://minio.thecoffeehouse.com/image/admin/1681368048_kombucha-yuzu-new_400x400.jpg",
+                }}
               />
             </div>
             <div className="lg:w-1/4 xs:w-1/2 ">
@@ -70,6 +176,13 @@ function HomeScreen(props) {
                 class_name_top="shadow-image"
                 class_name_border="lg:h-96"
                 class_name_name_product="font-semibold text-md"
+                data={{
+                  id: 2,
+                  name: "Hồng Trà Sữa Nóng",
+                  price: 100000,
+                  image:
+                    "https://minio.thecoffeehouse.com/image/admin/1681368048_kombucha-yuzu-new_400x400.jpg",
+                }}
               />
             </div>
             <div className="lg:w-1/4 xs:w-1/2 ">
@@ -78,6 +191,13 @@ function HomeScreen(props) {
                 class_name_top="shadow-image"
                 class_name_border="lg:h-96"
                 class_name_name_product="font-semibold text-md"
+                data={{
+                  id: 2,
+                  name: "Hồng Trà Sữa Nóng",
+                  price: 100000,
+                  image:
+                    "https://minio.thecoffeehouse.com/image/admin/1681368048_kombucha-yuzu-new_400x400.jpg",
+                }}
               />
             </div>
             <div className="lg:w-1/4 xs:w-1/2 ">
@@ -86,6 +206,13 @@ function HomeScreen(props) {
                 class_name_border="lg:h-96"
                 class_name_top="shadow-image"
                 class_name_name_product="font-semibold text-md"
+                data={{
+                  id: 2,
+                  name: "Hồng Trà Sữa Nóng",
+                  price: 100000,
+                  image:
+                    "https://minio.thecoffeehouse.com/image/admin/1681368048_kombucha-yuzu-new_400x400.jpg",
+                }}
               />
             </div>
             <div className="lg:w-1/4 xs:w-1/2 ">
@@ -94,6 +221,13 @@ function HomeScreen(props) {
                 class_name_top="shadow-image"
                 class_name_border="lg:h-96"
                 class_name_name_product="font-semibold text-md"
+                data={{
+                  id: 2,
+                  name: "Hồng Trà Sữa Nóng",
+                  price: 100000,
+                  image:
+                    "https://minio.thecoffeehouse.com/image/admin/1681368048_kombucha-yuzu-new_400x400.jpg",
+                }}
               />
             </div>
           </div>
@@ -105,119 +239,75 @@ function HomeScreen(props) {
           </h1>
           {/* list category */}
           <div className="flex flex-wrap w-full justify-center">
-            <div className="lg:w-1/12 xs:w-1/4">
-              <CardCategory />
-            </div>
-            <div className="lg:w-1/12 xs:w-1/4">
-              <CardCategory />
-            </div>
-            <div className="lg:w-1/12 xs:w-1/4">
-              <CardCategory />
-            </div>
-            <div className="lg:w-1/12 xs:w-1/4">
-              <CardCategory />
-            </div>
-            <div className="lg:w-1/12 xs:w-1/4">
-              <CardCategory />
-            </div>
-            <div className="lg:w-1/12 xs:w-1/4">
-              <CardCategory />
-            </div>
+            <Swiper
+              slidesPerView={5}
+              modules={[Autoplay]}
+              // loop={true}
+              speed={2000}
+              scrollbar={true}
+              slidesPerGroup={1}
+              autoplay={{
+                delay: 2000,
+                disableOnInteraction: false,
+                waitForTransition: true,
+                pauseOnMouseEnter: true,
+              }}
+              className="mySwiper w-6/12 flex justify-center"
+            >
+              <SwiperSlide style={{ margin: "0px" }}>
+                <CardCategory
+                  handleGetListProductByCategoryID={
+                    handleGetListProductByCategoryID
+                  }
+                  data={{
+                    name: "Tất cả",
+                    id: "ALL",
+                    image:
+                      "https://minio.thecoffeehouse.com/image/admin/1677724557_thuc-uong-khac.png",
+                  }}
+                />
+              </SwiperSlide>
+              {listCategory.length !== 0
+                ? listCategory.map((item, index) => {
+                    return (
+                      <SwiperSlide style={{ margin: "0px" }}>
+                        <CardCategory
+                          handleGetListProductByCategoryID={
+                            handleGetListProductByCategoryID
+                          }
+                          data={item}
+                        />
+                      </SwiperSlide>
+                    );
+                  })
+                : ""}
+            </Swiper>
           </div>
           {/* list card */}
-          <div className="mt-5 flex flex-wrap">
-            <div className="lg:w-1/6 xs:w-1/2">
-              <Card
-                class_name=" p-4 shadow-image rounded-md"
-                class_name_border="p-4 lg:h-auto"
-                class_name_name_product="text-sm"
-              />
-            </div>
-            <div className="lg:w-1/6 xs:w-1/2">
-              <Card
-                class_name=" p-4 shadow-image rounded-md"
-                class_name_border="p-4 lg:h-auto"
-                class_name_name_product="text-sm"
-              />
-            </div>
-            <div className="lg:w-1/6 xs:w-1/2">
-              <Card
-                class_name=" p-4 shadow-image rounded-md"
-                class_name_border="p-4 lg:h-auto"
-                class_name_name_product="text-sm"
-              />
-            </div>
-            <div className="lg:w-1/6 xs:w-1/2">
-              <Card
-                class_name=" p-4 shadow-image rounded-md"
-                class_name_border="p-4 lg:h-auto"
-                class_name_name_product="text-sm"
-              />
-            </div>
-            <div className="lg:w-1/6 xs:w-1/2">
-              <Card
-                class_name=" p-4 shadow-image rounded-md"
-                class_name_border="p-4 lg:h-auto"
-                class_name_name_product="text-sm"
-              />
-            </div>
-            <div className="lg:w-1/6 xs:w-1/2">
-              <Card
-                class_name=" p-4 shadow-image rounded-md"
-                class_name_border="p-4 lg:h-auto"
-                class_name_name_product="text-sm"
-              />
-            </div>
-            <div className="lg:w-1/6 xs:w-1/2">
-              <Card
-                class_name=" p-4 shadow-image rounded-md"
-                class_name_border="p-4 lg:h-auto"
-                class_name_name_product="text-sm"
-              />
-            </div>
-            <div className="lg:w-1/6 xs:w-1/2">
-              <Card
-                class_name=" p-4 shadow-image rounded-md"
-                class_name_border="p-4 lg:h-auto"
-                class_name_name_product="text-sm"
-              />
-            </div>
-            <div className="lg:w-1/6 xs:w-1/2">
-              <Card
-                class_name=" p-4 shadow-image rounded-md"
-                class_name_border="p-4 lg:h-auto"
-                class_name_name_product="text-sm"
-              />
-            </div>
-            <div className="lg:w-1/6 xs:w-1/2">
-              <Card
-                class_name=" p-4 shadow-image rounded-md"
-                class_name_border="p-4 lg:h-auto"
-                class_name_name_product="text-sm"
-              />
-            </div>
-            <div className="lg:w-1/6 xs:w-1/2">
-              <Card
-                class_name=" p-4 shadow-image rounded-md"
-                class_name_border="p-4 lg:h-auto"
-                class_name_name_product="text-sm"
-              />
-            </div>
-            <div className="lg:w-1/6 xs:w-1/2">
-              <Card
-                class_name=" p-4 shadow-image rounded-md"
-                class_name_border="p-4 lg:h-auto"
-                class_name_name_product="text-sm"
-              />
-            </div>
+          <div className="mt-5 w-full flex flex-wrap">
+            {listProductByCategoryId.length !== 0 &&
+              listProductByCategoryId.map((item, index) => {
+                return (
+                  <>
+                    <div className="lg:w-1/6 xs:w-1/2">
+                      <Card
+                        data={item}
+                        class_name=" p-4 shadow-image rounded-md"
+                        class_name_border="p-4"
+                        class_name_name_product="text-sm"
+                      />
+                    </div>
+                  </>
+                );
+              })}
             <div className="w-full mt-6">
-              <a
-                href=""
+              <Link
+                to={url.product}
                 className="flex justify-center items-center text-orange-1 hover:text-orange-2"
               >
                 <p className="mr-2"> Xem Thêm</p>
                 <BsArrowRight />
-              </a>
+              </Link>
             </div>
           </div>
         </div>

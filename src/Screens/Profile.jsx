@@ -16,11 +16,12 @@ import { loginSlide, updateUserData } from "../actionSlide/loginSlide";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ClipLoader } from "react-spinners";
-
+import { useTranslation } from "react-i18next";
 Profile.propTypes = {};
 
 function Profile(props) {
   const userLogin = useSelector((state) => state.userLogin.userLoginInfo);
+  const { t } = useTranslation("userProFile");
   const loadingUpdateUser = useSelector(
     (state) => state.userLogin.loadingUpdateUser
   );
@@ -222,7 +223,7 @@ function Profile(props) {
       <div className="w-full mb-8 flex justify-center items-center gap-2">
         <AiOutlineUser className="w-8 h-8  text-primary-500 " />
         <p className="text-2xl font-semibold text-primary-500">
-          Thông tin tài khoản
+          {t("user-profile")}
         </p>
       </div>
 
@@ -246,7 +247,7 @@ function Profile(props) {
             </label>
           </div>
 
-          <div className="lg:px-10 lg:mt-6 lg:m-0 xs:mb-4  relative">
+          {/* <div className="lg:px-10 lg:mt-6 lg:m-0 xs:mb-4  relative">
             <img
               src="https://fibocard.com/image/245_1_P%20M.png"
               className="shadow-lg"
@@ -258,13 +259,13 @@ function Profile(props) {
             <p className="- absolute top-12 lg:left-16 xs:left-6 text-base text-white font-normal">
               1000 Coins
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="lg:w-2/4 xs:w-full gap-3 flex flex-col ">
         <div className="flex flex-col  gap-2 w-full relative">
           <p className="- text-lg font-medium text-orange-2  mt-2">
-            Tên Khách Hàng
+            {t("full-name")}
           </p>
           <div className="w-full flex flex-col gap-2 relative">
             <input
@@ -273,7 +274,7 @@ function Profile(props) {
               className="w-full text-black shadow-md border  border-gray-300  rounded-5 py-2 px-2 text-sm"
               onChange={handleOnChangeInputUpdate}
               value={userLoginInfo.name}
-              placeholder="Họ và Tên"
+              placeholder={t("full-name")}
             />
           </div>
           {errUserUpdate.name && (
@@ -284,7 +285,7 @@ function Profile(props) {
         </div>
         <div className="w-full flex flex-col gap-2 relative">
           <p className="- text-lg font-medium text-orange-2  mt-2">
-            Số Điên Thoại
+            {t("phone")}
           </p>
 
           <div className="w-full flex flex-col gap-8">
@@ -292,7 +293,7 @@ function Profile(props) {
               type="text"
               name="phone"
               className="w-full text-black shadow-md border  border-gray-300  rounded-5 py-2 px-2 text-sm"
-              placeholder="NHập số điện thoại"
+              placeholder={t("phone")}
               onChange={handleOnChangeInputUpdate}
               value={`${userLoginInfo.phone && userLoginInfo.phone.trim()}`}
             />
@@ -305,12 +306,14 @@ function Profile(props) {
         </div>
 
         <div className="w-full flex flex-col gap-2 relative">
-          <p className="- text-lg font-medium text-orange-2  mt-2">Email</p>
+          <p className="- text-lg font-medium text-orange-2  mt-2">
+            {t("email")}
+          </p>
           <div className="w-full flex gap-8">
             <input
               type="text"
               className="w-full text-black shadow-md border bg-gray-300 border-gray-300  rounded-5 py-2 px-2 text-sm"
-              placeholder="Email"
+              placeholder={t("email")}
               value={userLoginInfo.email}
               disabled
             />
@@ -323,7 +326,9 @@ function Profile(props) {
         </div>
 
         <div className="w-full flex flex-col gap-2 relative">
-          <p className="- text-lg font-medium text-orange-2  mt-2">Ngày Sinh</p>
+          <p className="- text-lg font-medium text-orange-2  mt-2">
+            {t("birthday")}
+          </p>
           <div className="w-full flex gap-8">
             <input
               type="date"
@@ -342,20 +347,24 @@ function Profile(props) {
         </div>
 
         <div className="w-full flex flex-col gap-2 relative">
-          <p className="- text-lg font-medium text-orange-2  mt-2">Địa chỉ</p>
+          <p className="- text-lg font-medium text-orange-2  mt-2">
+            {t("address")}
+          </p>
           <div className="w-full flex gap-8">
             <input
               type="text"
               name="address"
               className="w-full text-black shadow-md border  border-gray-300  rounded-5 py-2 px-2 text-sm"
-              placeholder="Nhập địa chỉ"
+              placeholder={t("address")}
               onChange={handleOnChangeInputUpdate}
               value={userLoginInfo.address}
             />
           </div>
         </div>
 
-        <p className="- text-lg font-medium text-orange-2  mt-2">Giới tính</p>
+        <p className="- text-lg font-medium text-orange-2  mt-2">
+          {t("gender")}
+        </p>
         <div className="w-full flex gap-8">
           <div>
             <input
@@ -373,7 +382,7 @@ function Profile(props) {
                 userLoginInfo.gender == 1 && "text-primary-500"
               }`}
             >
-              Nam
+              {t("male")}
             </label>
           </div>
           <div>
@@ -392,7 +401,7 @@ function Profile(props) {
                 userLoginInfo.gender == 2 && "text-primary-500"
               }`}
             >
-              Nữ
+              {t("female")}
             </label>
           </div>
         </div>
@@ -416,7 +425,7 @@ function Profile(props) {
                 speedMultiplier={0.5}
               />
             ) : (
-              "Cập Nhật"
+              <> {t("update")}</>
             )}
           </button>
         </div>

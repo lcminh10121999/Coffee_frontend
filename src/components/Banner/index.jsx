@@ -22,9 +22,9 @@ function Banner(props) {
           "--swiper-pagination-bullet-size": "10px",
           "--swiper-pagination-bullet-horizontal-gap": "4px",
         }}
-        speed={1000}
+        speed={2500}
         modules={[Autoplay, Pagination]}
-        autoplay={{ delay: 1000, disableOnInteraction: false }}
+        autoplay={{ delay: 2000, disableOnInteraction: false }}
         //   className={props.classNameBanner}
         className={`w-full lg:h-100  lg:container lg:m-auto xs:m-0 ${props.classNameBannerImage}`}
       >

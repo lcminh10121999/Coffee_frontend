@@ -36,7 +36,7 @@ function Card(props) {
   // }
   return (
     <div
-      className={`w-full  xs:h-60 lg:h-82 flex flex-col ${props.class_name_border}`}
+      className={`w-full  xs:h-82 lg:h-82 flex flex-col ${props.class_name_border}`}
     >
       {/* border */}
       <div
@@ -47,15 +47,20 @@ function Card(props) {
           to={{
             pathname: "/product/" + slugProduct,
           }}
-          state={{ id: data.id }}
+          state={{ id: data.id, category_id: data.category_id }}
           relative="path"
         >
-          <div className={`w-full rounded-md ${props.class_name_top}`}>
+          <div
+            className={`w-full relative overflow-hidden rounded-md ${props.class_name_top}`}
+          >
             <img
-              className="xs:max-h-80 w-full rounded-md hover:scale-110"
+              className="xs:max-h-80 w-full rounded-md hover:rounded-md hover:scale-110 transition duration-1000"
               src={data.image}
               alt="item"
             />
+            {/* <div className=" absolute top-2 right-2 w-7 h-7 text-center flex-colo  rounded-full text-sm  text-black">
+              ({data.count_sell})
+            </div> */}
           </div>
         </Link>
         {/* card-button */}
@@ -64,16 +69,23 @@ function Card(props) {
             to={{
               pathname: "/product/" + slugProduct,
             }}
-            state={{ id: data.id }}
+            state={{ id: data.id, category_id: data.category_id }}
             relative="path"
             className={`${props.class_name_name_product} font-medium w-full hover:text-orange-3 `}
           >
-            <div className={``}>{data.name}</div>
+            <div className={``}>
+              {data.name} <span> </span>
+            </div>
           </Link>
           <div className="flex justify-between  mt-4 ">
             {/* lef-card */}
-            <div className="text-sm text-primary-500 self-center font-medium">
-              {data.price.toLocaleString()} <span>vnd</span>
+            <div className="flex flex-col ">
+              <div className=" text-base text-primary-500 self-center font-medium">
+                {data.price.toLocaleString()} <span>vnd</span>
+              </div>
+              <div className=" text-xs text-primary-500 self-start font-light ">
+                ({data.count_sell}) <span>Sold</span>
+              </div>
             </div>
             {/* right-card */}
             <div>

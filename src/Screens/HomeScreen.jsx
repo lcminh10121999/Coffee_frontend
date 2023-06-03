@@ -21,12 +21,21 @@ import {
   LIMIT_LIST_PRODUCT,
   OFFSET_LIST_PRODUCT,
 } from "../constant/constantListProduct";
-import { getListProductSlide, productSlide } from "../actionSlide/productSlide";
+import {
+  getListProductSlide,
+  handleGetProductSellCount,
+  productSlide,
+} from "../actionSlide/productSlide";
 import { HashLoader } from "react-spinners";
 import { ROUTER_URL } from "../data/ruotersUrl";
+import { useTranslation } from "react-i18next";
+import { ToastContainer, toast } from "react-toastify";
+import { getListOrder, orderSlide } from "../actionSlide/orderSLide";
 HomeScreen.propTypes = {};
 
 function HomeScreen(props) {
+  const { t } = useTranslation("home");
+
   const bannerImage = BANNER_ABOUT_US_IMAGE;
   const classNameBanner = "";
   const classNameBannerImage = "rounded-md";
@@ -34,12 +43,18 @@ function HomeScreen(props) {
     "lg:p-8 xs:p-4 bg-gradient-to-r from-orange-2 to-orange-1";
   const dispatch = useDispatch();
   const url = ROUTER_URL;
+  const userLogin = useSelector((state) => state.userLogin.userInfo);
   const loadingCategory = useSelector((state) => state.category.loading);
   const listCategory = useSelector((state) => state.category.listCategory);
+  const loadingOrder = useSelector((state) => state.order.loading);
+
   const [categoryId, setCategoryId] = useState("ALL");
   const limit = LIMIT_LIST_PRODUCT;
   const offsetProduct = useSelector(
     (state) => state.product.productList.offset
+  );
+  const listProductSellCount = useSelector(
+    (state) => state.product.productSellCount.data
   );
   const [offset, setOffset] = useState(offsetProduct);
   const listProductByCategoryId = useSelector(
@@ -58,11 +73,14 @@ function HomeScreen(props) {
         id: categoryId,
         limit: limit,
         page: 1,
+        sortColumn: "id",
+        sortType: "DESC",
       })
     );
     setOffset(2);
     dispatch(productSlide.actions.setOffSetProduct(2));
   };
+
   useEffect(() => {
     if (loadingCategory === "idle") {
       dispatch(getCategory());
@@ -77,6 +95,8 @@ function HomeScreen(props) {
           id: "ALL",
           limit: limit,
           page: 1,
+          sortColumn: "id",
+          sortType: "DESC",
         })
       );
       setOffset(offset + 1);
@@ -92,6 +112,8 @@ function HomeScreen(props) {
           id: "ALL",
           limit: limit,
           page: 1,
+          sortColumn: "id",
+          sortType: "DESC",
         })
       );
       setOffset(offset + 1);
@@ -107,13 +129,47 @@ function HomeScreen(props) {
           id: "ALL",
           limit: limit,
           page: 1,
+          sortColumn: "id",
+          sortType: "DESC",
         })
       );
       setOffset(2);
       dispatch(productSlide.actions.setOffSetProduct(2));
     }
   }, [loadingCategory]);
+  useEffect(() => {
+    if (loadingOrder === "success") {
+      toast.success("Đặc hàng thành công!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      dispatch(handleGetProductSellCount());
+      dispatch(orderSlide.actions.setLoading("idle"));
+      let limit = 4;
+      let date = new Date();
+      dispatch(
+        getListOrder({
+          id: userLogin.id,
+          limit: limit,
+          page: 1,
+          keySearch: "",
+          startDate: userLogin.createdAt,
+          endDate: date,
+        })
+      );
+      dispatch(orderSlide.actions.setOffsetHistoryOrder(2));
+    }
+  }, [loadingOrder]);
 
+  useEffect(() => {
+    dispatch(handleGetProductSellCount());
+  }, []);
   return (
     <Layout>
       <Banner
@@ -129,7 +185,7 @@ function HomeScreen(props) {
         <div className="mt-8 mb-4 flex justify-center flex-wrap ">
           {/* title */}
           <h1 className="font-bold w-full text-center text-3xl text-primary-500">
-            Sản Phẩm Bán Chạy
+            {t("best-seller")}
           </h1>
           {/* list card */}
           <div className="flex flex-wrap w-full mt-6">
@@ -140,121 +196,59 @@ function HomeScreen(props) {
                 className=" shadow-image rounded-md "
               />
             </div>
-            <div className="lg:w-1/4 xs:w-1/2 ">
-              <Card
-                class_name=" p-4"
-                class_name_top="shadow-image"
-                class_name_border="lg:h-96"
-                class_name_name_product="font-semibold text-md"
-                data={{
-                  id: 2,
-                  name: "Hồng Trà Sữa Nóng",
-                  price: 100000,
-                  image:
-                    "https://minio.thecoffeehouse.com/image/admin/1681368048_kombucha-yuzu-new_400x400.jpg",
-                }}
-              />
-            </div>
-            <div className="lg:w-1/4 xs:w-1/2 ">
-              <Card
-                class_name=" p-4"
-                class_name_top="shadow-image"
-                class_name_border="lg:h-96"
-                class_name_name_product="font-semibold text-md"
-                data={{
-                  id: 2,
-                  name: "Hồng Trà Sữa Nóng",
-                  price: 100000,
-                  image:
-                    "https://minio.thecoffeehouse.com/image/admin/1681368048_kombucha-yuzu-new_400x400.jpg",
-                }}
-              />
-            </div>
-            <div className="lg:w-1/4 xs:w-1/2 ">
-              <Card
-                class_name=" p-4"
-                class_name_top="shadow-image"
-                class_name_border="lg:h-96"
-                class_name_name_product="font-semibold text-md"
-                data={{
-                  id: 2,
-                  name: "Hồng Trà Sữa Nóng",
-                  price: 100000,
-                  image:
-                    "https://minio.thecoffeehouse.com/image/admin/1681368048_kombucha-yuzu-new_400x400.jpg",
-                }}
-              />
-            </div>
-            <div className="lg:w-1/4 xs:w-1/2 ">
-              <Card
-                class_name=" p-4"
-                class_name_top="shadow-image"
-                class_name_border="lg:h-96"
-                class_name_name_product="font-semibold text-md"
-                data={{
-                  id: 2,
-                  name: "Hồng Trà Sữa Nóng",
-                  price: 100000,
-                  image:
-                    "https://minio.thecoffeehouse.com/image/admin/1681368048_kombucha-yuzu-new_400x400.jpg",
-                }}
-              />
-            </div>
-            <div className="lg:w-1/4 xs:w-1/2 ">
-              <Card
-                class_name="p-4"
-                class_name_border="lg:h-96"
-                class_name_top="shadow-image"
-                class_name_name_product="font-semibold text-md"
-                data={{
-                  id: 2,
-                  name: "Hồng Trà Sữa Nóng",
-                  price: 100000,
-                  image:
-                    "https://minio.thecoffeehouse.com/image/admin/1681368048_kombucha-yuzu-new_400x400.jpg",
-                }}
-              />
-            </div>
-            <div className="lg:w-1/4 xs:w-1/2 ">
-              <Card
-                class_name=" p-4"
-                class_name_top="shadow-image"
-                class_name_border="lg:h-96"
-                class_name_name_product="font-semibold text-md"
-                data={{
-                  id: 2,
-                  name: "Hồng Trà Sữa Nóng",
-                  price: 100000,
-                  image:
-                    "https://minio.thecoffeehouse.com/image/admin/1681368048_kombucha-yuzu-new_400x400.jpg",
-                }}
-              />
-            </div>
+            {listProductSellCount?.map((item) => {
+              return (
+                <div className="lg:w-1/4 xs:w-1/2 ">
+                  <Card
+                    class_name=" p-4"
+                    class_name_top="shadow-image"
+                    class_name_border="lg:h-96"
+                    class_name_name_product="font-semibold text-md"
+                    data={item}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
         {/* Us Product */}
         <div className="mb-10 mt-20 flex justify-center flex-wrap ">
           <h1 className="font-bold w-full text-center text-3xl text-primary-500">
-            Sản phẩm Từ Nhà
+            {t("our-products")}
           </h1>
           {/* list category */}
           <div className="flex flex-wrap w-full justify-center">
             <Swiper
-              slidesPerView={5}
+              // slidesPerView={5}
               modules={[Autoplay]}
               // loop={true}
               speed={2000}
               scrollbar={true}
-              slidesPerGroup={1}
+              // slidesPerGroup={1}
               autoplay={{
                 delay: 2000,
                 disableOnInteraction: false,
                 waitForTransition: true,
                 pauseOnMouseEnter: true,
               }}
-              className="mySwiper w-6/12 flex justify-center"
+              spaceBetween={10}
+              // Responsive breakpoints
+              breakpoints={{
+                1024: {
+                  slidesPerView: 5,
+                  spaceBetweenSlides: 10,
+                },
+                768: {
+                  slidesPerView: 2,
+                  spaceBetweenSlides: 10,
+                },
+              }}
+              className="mySwiper lg:w-6/12 xs:w-10/12 flex justify-center"
             >
-              <SwiperSlide style={{ margin: "0px" }}>
+              <SwiperSlide
+                // className=" lg:w-auto xs:w-1/2"
+                style={{ margin: "0px" }}
+              >
                 <CardCategory
                   handleGetListProductByCategoryID={
                     handleGetListProductByCategoryID
@@ -265,6 +259,7 @@ function HomeScreen(props) {
                     image:
                       "https://minio.thecoffeehouse.com/image/admin/1677724557_thuc-uong-khac.png",
                   }}
+                  itemSelected={categoryId}
                 />
               </SwiperSlide>
               {listCategory.length !== 0
@@ -276,6 +271,7 @@ function HomeScreen(props) {
                             handleGetListProductByCategoryID
                           }
                           data={item}
+                          itemSelected={categoryId}
                         />
                       </SwiperSlide>
                     );
@@ -305,7 +301,7 @@ function HomeScreen(props) {
                 to={url.product}
                 className="flex justify-center items-center text-orange-1 hover:text-orange-2"
               >
-                <p className="mr-2"> Xem Thêm</p>
+                <p className="mr-2"> {t("see-more")}</p>
                 <BsArrowRight />
               </Link>
             </div>
@@ -321,13 +317,12 @@ function HomeScreen(props) {
                 By The Coffee House
               </h3>
               <p className="text-sm mt-2 lg:text-left xs:text-center">
-                Nơi cuộc hẹn tròn đầy với Cà phê đặc sản, Món ăn đa bản sắc và
-                Không gian cảm hứng.
+                {t("banner-second-detail")}
               </p>
               <div className="my-4 flex lg:justify-start xs:justify-center">
                 <ButtonProject
                   className="text-white font-bold py-2 px-4 rounded-lg bg-orange-1 hover:bg-orange-2 flex justify-center items-center"
-                  text="Tìm Hiểu Thêm"
+                  text={t("banner-second-see-more")}
                   icon={<BsArrowRight />}
                 />
               </div>
@@ -370,18 +365,30 @@ function HomeScreen(props) {
         {/* tin tuc */}
         <div className="w-full my-8">
           <h1 className="font-bold mb-4 w-full text-center text-3xl text-primary-500">
-            Tin Tức
+            {t("new")}
           </h1>
           {/* list tin tuc */}
           <div className="flex flex-wrap">
             <div className="lg:w-1/3 xs:w-full">
-              <CardInformation flexCLass="p-6" shadow="shadow-image" />
+              <CardInformation
+                cartImage="https://file.hstatic.net/1000075078/article/dscf6292_d784e8350a0942c1965127ecf57587ee_grande.jpg"
+                flexCLass="p-6"
+                shadow="shadow-image"
+              />
             </div>
             <div className="lg:w-1/3 xs:w-full">
-              <CardInformation flexCLass="p-6" shadow="shadow-image" />
+              <CardInformation
+                cartImage="https://file.hstatic.net/1000075078/article/thecoffeehouse_caphe_7_db8def55acbf426ea725921529f6f01e_grande.jpg"
+                flexCLass="p-6"
+                shadow="shadow-image"
+              />
             </div>
             <div className="lg:w-1/3 xs:w-full">
-              <CardInformation flexCLass="p-6" shadow="shadow-image" />
+              <CardInformation
+                cartImage="https://file.hstatic.net/1000075078/article/thecoffehouse_ca_phe_01_b4adbd88db6e4ca3b7c2c5934d1a1ed9_grande.jpg"
+                flexCLass="p-6"
+                shadow="shadow-image"
+              />
             </div>
 
             <div className="w-full mt-6">
@@ -389,7 +396,7 @@ function HomeScreen(props) {
                 to={`/news`}
                 className="flex justify-center items-center text-orange-1 hover:text-orange-2"
               >
-                <p className="mr-2"> Xem Thêm</p>
+                <p className="mr-2">{t("see-more")}</p>
                 <BsArrowRight />
               </Link>
             </div>

@@ -6,10 +6,14 @@ CardCategory.propTypes = {};
 
 function CardCategory(props) {
   const data = props.data;
-
+  const selected = props.itemSelected;
   return (
     <div className="text-center flex flex-col items-center p-4">
-      <div className="hover:text-primary-500 cursor-pointer">
+      <div
+        className={`hover:text-primary-500 cursor-pointer ${
+          data.id === selected && "text-primary-500"
+        }`}
+      >
         <div
           onClick={(e) => props.handleGetListProductByCategoryID(e, data.id)}
           className="w-full flex justify-between flex-col items-center"

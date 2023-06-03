@@ -10,6 +10,7 @@ import "swiper/css/navigation";
 import "aos";
 import "aos/dist/aos.css";
 import { store } from './Store/store';
+import "../src/i18n/i18n"
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

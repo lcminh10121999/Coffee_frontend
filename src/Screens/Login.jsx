@@ -12,11 +12,13 @@ import { loginSlide } from "../actionSlide/loginSlide.js";
 import { PulseLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useTranslation } from "react-i18next";
 
 Login.propTypes = {};
 
 function Login(props) {
   const [isSign, setIsSign] = useState(true);
+  const { t } = useTranslation("login");
   const userLoginInfo = useSelector((state) => state.userLogin.userInfo);
   const loadingLogin = useSelector((state) => state.userLogin.loadingLogin);
   const loadingRegister = useSelector(
@@ -163,7 +165,7 @@ function Login(props) {
       console.log(dataLogin);
       try {
         let data = await handleUserLogin(dataLogin.email, dataLogin.password);
-        console.log(data);
+
         if ((data && data.errCode === 1) || data.errCode === 2) {
           toastError();
           setErrorLoginEmail({
@@ -307,17 +309,21 @@ function Login(props) {
   useEffect(() => {
     if (JSON.parse(loggedLocalStore) === true) {
       let dataUser = localStorage.getItem("userLogin");
+
+      // let data = await handleUserLogin(dataLogin.email, dataLogin.password);
+      // dispatch(loginSlide.actions.setUserLogin(data.user));
+      // dispatch(loginSlide.actions.setLogged(true));
+      const data = JSON.parse(dataUser);
       dispatch(loginSlide.actions.setLoadingLogin("success"));
-      dispatch(loginSlide.actions.setUserLogin(dataUser));
-      console.log("1", loadingLogin);
+      dispatch(loginSlide.actions.setUserLogin(data));
     } else if (JSON.parse(loggedSessionStore) === true) {
       let dataUser = sessionStorage.getItem("userLogin");
-      console.log("sessionStorage", dataUser);
+
+      const data = JSON.parse(dataUser);
       dispatch(loginSlide.actions.setLoadingLogin("success"));
-      dispatch(loginSlide.actions.setUserLogin(dataUser));
+      dispatch(loginSlide.actions.setUserLogin(data));
     } else if (loggedLoginSlide === true) {
       dispatch(loginSlide.actions.setLoadingLogin("success"));
-      console.log("2", loadingLogin);
     }
   }, [loggedLocalStore, loggedSessionStore, loggedLoginSlide]);
 
@@ -384,7 +390,7 @@ function Login(props) {
                     className="flex gap-4 justify-center w-full "
                   >
                     <div className="flex flex-col items-center pb-1 px-2   border-b text-white border-white">
-                      <h3 className="mb-1 text-lg font-medium">Sign In</h3>
+                      <h3 className="mb-1 text-lg font-medium">{t("login")}</h3>
                       <div className="w-full border-b border-white"></div>
                     </div>
                   </motion.div>
@@ -399,7 +405,7 @@ function Login(props) {
                     <div className="w-full relative shadow-lg">
                       <input
                         type="email"
-                        placeholder="Nhập Email"
+                        placeholder={t("email")}
                         name="email"
                         value={dataLogin.email}
                         onChange={(e) => handleChangeInputLogin(e)}
@@ -416,7 +422,7 @@ function Login(props) {
                         name="password"
                         value={dataLogin.password}
                         onChange={(e) => handleChangeInputLogin(e)}
-                        placeholder="Nhập Password"
+                        placeholder={t("password")}
                         className="w-full  border bg-white rounded-5  px-2 py-2 relative"
                       />
                       {showPassword && (
@@ -460,7 +466,7 @@ function Login(props) {
                         htmlFor="remember"
                         className="text-white text-sm  "
                       >
-                        Remember Me
+                        {t("remember-me")}
                       </label>
                     </div>
                     <div className="flex items-center gap-2">
@@ -469,7 +475,7 @@ function Login(props) {
                         onClick={() => setIsSign(false)}
                         className="text-white text-sm cursor-pointer"
                       >
-                        Sign Up now ?
+                        {t("register-now")}
                       </label>
                     </div>
                   </motion.div>
@@ -492,7 +498,7 @@ function Login(props) {
                           onClick={(e) => handleLogin(e)}
                           className="rounded w-full px-3 py-2 m-1 border-b-4 border-l-2 text-white shadow-lg bg-teal-400 border-teal-600 hover:bg-teal-600 hover:border-teal-400 font-medium "
                         >
-                          Sign In
+                          {t("login")}
                         </button>
                       </>
                     )}
@@ -503,7 +509,7 @@ function Login(props) {
                           disabled
                           className="rounded w-full px-3 py-2 m-1 border-b-4 border-l-2 text-white shadow-lg bg-teal-600 border-teal-400 font-medium "
                         >
-                          Loading
+                          {t("loading")}
                         </button>
                         <div className="h-full w-fit absolute left-28 top-0 flex items-center pb-1">
                           <PulseLoader
@@ -535,7 +541,10 @@ function Login(props) {
                       className="flex gap-4 justify-center w-full "
                     >
                       <div className="flex flex-col items-center pb-1 px-2   border-b text-white border-white">
-                        <h3 className="mb-1 text-lg font-medium">Sign Up</h3>
+                        <h3 className="mb-1 text-lg font-medium">
+                          {" "}
+                          {t("register")}
+                        </h3>
                         <div className="w-full border-b border-white"></div>
                       </div>
                     </motion.div>
@@ -552,7 +561,7 @@ function Login(props) {
                           name="email"
                           onChange={handleChangeInputRegister}
                           value={dataRegister.email}
-                          placeholder="Nhập Email"
+                          placeholder={t("email")}
                           className="w-full border bg-white rounded-5  px-2 py-2 "
                         />
                         {errorRegister.errEmail && (
@@ -564,7 +573,7 @@ function Login(props) {
                       <div className="w-full relative shadow-lg">
                         <input
                           type="text"
-                          placeholder="Nhập Name"
+                          placeholder={t("full-name")}
                           onChange={handleChangeInputRegister}
                           value={dataRegister.name}
                           name="name"
@@ -582,7 +591,7 @@ function Login(props) {
                           name="password"
                           value={dataRegister.password.trim()}
                           onChange={handleChangeInputRegister}
-                          placeholder="Nhập Password"
+                          placeholder={t("password")}
                           className="w-full border bg-white rounded-5  px-2 py-2"
                         />
                         {errorRegister.errPassword && (
@@ -614,7 +623,7 @@ function Login(props) {
                           name="phone"
                           value={dataRegister.phone.trim()}
                           onChange={handleChangeInputRegister}
-                          placeholder="Nhập Só Điện Thoại"
+                          placeholder={t("phone")}
                           className="w-full border bg-white rounded-5  px-2 py-2"
                         />
                         {errorRegister.errPhone && (
@@ -652,7 +661,7 @@ function Login(props) {
                           onClick={() => setIsSign(true)}
                           className="text-white text-sm cursor-pointer"
                         >
-                          Sign in now ?
+                          {t("login-now")}
                         </label>
                       </div>
                     </motion.div>
@@ -669,7 +678,7 @@ function Login(props) {
                             onClick={handleRegister}
                             className="rounded w-full px-3 py-2 m-1 border-b-4 border-l-2 text-white shadow-lg bg-teal-400 border-teal-600 hover:bg-teal-600 hover:border-teal-400 font-medium"
                           >
-                            Sign In
+                            {t("register")}
                           </button>
                         </>
                       )}
@@ -679,7 +688,7 @@ function Login(props) {
                             disabled
                             className="rounded w-full px-3 py-2 m-1 border-b-4 border-l-2 text-white shadow-lg bg-teal-600 border-teal-400 font-medium "
                           >
-                            Loading
+                            {t("loading")}
                           </button>
                           <div className="h-full w-fit absolute left-28 top-0 flex items-center pb-1">
                             <PulseLoader

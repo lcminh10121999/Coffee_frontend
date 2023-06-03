@@ -18,10 +18,12 @@ import {
 import { HiUserCircle, HiOutlineLocationMarker } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserLoggedById } from "../actionSlide/loginSlide";
+import { useTranslation } from "react-i18next";
 UserProfile.propTypes = {};
 
 function UserProfile({ children }) {
   const location = useLocation();
+  const { t } = useTranslation("nav");
   const slug = location.pathname;
   const userLogged = useSelector((state) => state.userLogin.logged);
   const userLogin = useSelector((state) => state.userLogin.userInfo);
@@ -43,8 +45,8 @@ function UserProfile({ children }) {
     }
 
     if (userLogged && userLogin.length !== 0 && userLoggedLoading === "idle") {
-      const data = JSON.parse(userLogin);
-      dispatch(getUserLoggedById(data.id));
+      // const data = JSON.parse(userLogin);
+      dispatch(getUserLoggedById(userLogin.id));
     }
 
     if (
@@ -67,7 +69,7 @@ function UserProfile({ children }) {
                 className="flex w-full gap-4 justify-start items-center text-orange-1 hover:text-orange-2"
               >
                 <AiOutlineUser className="w-6 h-6" />
-                <p className="text-lg">Thông tin tài khoản</p>
+                <p className="text-lg">{t("user-profile")}</p>
               </Link>
             ) : (
               <Link
@@ -75,7 +77,7 @@ function UserProfile({ children }) {
                 className="flex w-full gap-4 justify-start items-center  hover:text-orange-2"
               >
                 <AiOutlineUser className="w-6 h-6" />
-                <p className="text-lg">Thông tin tài khoản</p>
+                <p className="text-lg">{t("user-profile")}</p>
               </Link>
             )}
             {changeActivate == 3 ? (
@@ -84,7 +86,7 @@ function UserProfile({ children }) {
                 className="flex w-full gap-4 justify-start items-center text-orange-1 hover:text-orange-2"
               >
                 <HiOutlineLocationMarker className="w-6 h-6" />
-                <p className="text-lg">Sổ địa chỉ</p>
+                <p className="text-lg">{t("address-book")}</p>
               </Link>
             ) : (
               <Link
@@ -92,7 +94,7 @@ function UserProfile({ children }) {
                 className="flex w-full gap-4 justify-start items-center hover:text-orange-2"
               >
                 <HiOutlineLocationMarker className="w-6 h-6" />
-                <p className="text-lg">Sổ địa chỉ</p>
+                <p className="text-lg">{t("address-book")}</p>
               </Link>
             )}
             {changeActivate == 2 ? (
@@ -101,7 +103,7 @@ function UserProfile({ children }) {
                 className="flex w-full gap-4 justify-start items-center text-orange-1 hover:text-orange-2"
               >
                 <AiOutlineHistory className="w-6 h-6" />
-                <p className="text-lg">Lịch sử giao dịch</p>
+                <p className="text-lg">{t("transaction-history")}</p>
               </Link>
             ) : (
               <Link
@@ -109,7 +111,7 @@ function UserProfile({ children }) {
                 className="flex w-full gap-4 justify-start items-center hover:text-orange-2"
               >
                 <AiOutlineHistory className="w-6 h-6" />
-                <p className="text-lg">Lịch sử giao dịch</p>
+                <p className="text-lg">{t("transaction-history")}</p>
               </Link>
             )}
           </div>

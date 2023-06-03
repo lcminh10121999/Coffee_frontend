@@ -18,7 +18,7 @@ function DashBoard(props) {
   const slug = location.pathname;
   const params = useParams();
   const userLogin = useSelector((state) => state.userLogin.userInfo);
-  const [userLoginData, setUserLoginData] = useState({});
+  const [userLoginData, setUserLoginData] = useState(userLogin);
   const logged = useSelector((state) => state.userLogin.logged);
 
   const [changeActivate, setChangeActivate] = useState(0);
@@ -40,12 +40,12 @@ function DashBoard(props) {
       setChangeActivate(3);
     }
   }, [slug]);
-  useEffect(() => {
-    if (userLogin.length !== 0) {
-      const data = JSON.parse(userLogin);
-      setUserLoginData(data);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (userLogin.length !== 0) {
+  //     const data = JSON.parse(userLogin);
+  //     setUserLoginData(data);
+  //   }
+  // }, []);
   return (
     <>
       <SideBar openSideBar={openSideBar} setOpenSideBar={setOpenSideBar} />

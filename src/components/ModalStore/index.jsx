@@ -4,49 +4,42 @@ import { HiUserCircle, HiOutlineLocationMarker } from "react-icons/hi";
 import { AiOutlineClose } from "react-icons/ai";
 import { STORE_DATA } from "../../data/storeData";
 import { typeImplementation } from "@testing-library/user-event/dist/type/typeImplementation";
+import { useDispatch, useSelector } from "react-redux";
+import { storeSlide } from "../../actionSlide/storeSlide";
 ModalStore.propTypes = {};
 
 function ModalStore(props) {
-  const storeData = STORE_DATA;
-  const [select, setSelect] = useState(props.storeSelect);
-  const [selected, setSelected] = useState(props.storeSelected);
-  console.log(select);
+  // const storeData = STORE_DATA;
+  const storeList = useSelector((state) => state.store.storeList.data);
+  const storeCheck = useSelector((state) => state.store.storeCheck);
+  const [storeListSelected, setStoreListSelected] = useState(storeCheck);
+  const dispatch = useDispatch();
+  console.log("storeList", props.storeList);
   const handleChangeSelect = (e) => {
-    setSelect(e.target.value);
+    setStoreListSelected(e.target.value);
     if (e.target.value == "all") {
-      setSelected([
-        {
-          id: "all",
-          name: "Chọn Cửa Hàng",
-          address: "Chọn Cửa Hàng",
-        },
-      ]);
+      setStoreListSelected({
+        id: "all",
+        name: "Chọn Cửa Hàng",
+        address: "Chọn Cửa Hàng",
+      });
     } else {
-      const selected = storeData.filter((item) => item.id == e.target.value);
+      const selected = storeList.map((item) => {
+        item.id == e.target.value && setStoreListSelected(item);
+      });
+      // console.log(selected);
 
-      setSelected(selected);
+      // setStoreListSelected(selected);
     }
   };
   const handleApplySelect = () => {
-    props.setStoreSelect(select);
-    props.setStoreSelected(selected);
+    // props.setStoreSelect(select);
+    // props.setStoreSelected(selected);
+    // props.setShowModalStore(false);
+    // localStorage.setItem("storeSeleted", JSON.stringify(selected));
+    // localStorage.setItem("idStoreSeleted", JSON.stringify(select));
+    dispatch(storeSlide.actions.setStoreCheck(storeListSelected));
     props.setShowModalStore(false);
-    localStorage.setItem("storeSeleted", JSON.stringify(selected));
-    localStorage.setItem("idStoreSeleted", JSON.stringify(select));
-
-    // if (select == "all") {
-    //   props.setStoreSelect(select);
-    //   props.setStoreSelected([
-    //     {
-    //       id: "all",
-    //       name: "Chọn Cửa Hàng",
-    //       address: "Chọn Cửa Hàng",
-    //     },
-    //   ]);
-    // } else {
-    //   props.setStoreSelect(select);
-    //   props.setStoreSelected(selected);
-    // }
   };
 
   return (
@@ -74,12 +67,15 @@ function ModalStore(props) {
                 onChange={handleChangeSelect}
                 id=""
               >
-                <option selected={select == "all"} value="all">
+                <option selected={storeListSelected.id == "all"} value="all">
                   Chọn Cửa Hàng
                 </option>
-                {storeData.map((item) => {
+                {storeList?.map((item) => {
                   return (
-                    <option selected={select == item.id} value={item.id}>
+                    <option
+                      selected={storeListSelected.id == item.id}
+                      value={item.id}
+                    >
                       {item.name}
                     </option>
                   );
@@ -87,14 +83,14 @@ function ModalStore(props) {
               </select>
             </div>
             <div className="w-full flex flex-col gap-1 px-4">
-              {selected.map((item) => {
-                return (
-                  <>
-                    <p className="- font-semibold">{item.name}</p>
-                    <p className="- text-gray-1">{item.address}</p>
-                  </>
-                );
-              })}
+              {/* {storeListSelected?.map((item) => {
+                return ( */}
+              <>
+                <p className="- font-semibold">{storeListSelected?.name}</p>
+                <p className="- text-gray-1">{storeListSelected?.address}</p>
+              </>
+              {/* );
+              })} */}
             </div>
             <div className="w-full  flex gap-4 justify-center text-white">
               <button

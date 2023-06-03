@@ -1,0 +1,15 @@
+export const CHECKOUT_JP = {
+    "Order": "注文",
+    "delivery": "配達",
+    "selected-products": "選択された製品",
+    "size": "サイズ",
+    "payment-methods": "支払い方法",
+    "cash": "現金",
+    "bank": "国内銀行カード",
+    "visa": "国際決済カード",
+    "total": "合計",
+    "total-payment": "合計支払い",
+    "delivery-charges": "配送料",
+    "pay": "支払う",
+    "promotion": "プロモーション",
+}

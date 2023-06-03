@@ -21,6 +21,10 @@ import Profile from "./Screens/Profile";
 import UserAddress from "./Screens/UserAddress";
 import UserHistory from "./Screens/UserHistory";
 import UserProfile from "./Screens/UserProfile";
+import SearchPage from "./Screens/searchPage";
+import CheckoutSuccess from "./Screens/CheckoutSuccess";
+// import "moment/locate/vi";
+
 function App() {
   const url = ROUTER_URL;
   return (
@@ -39,12 +43,13 @@ function App() {
         <Route path={url.profile} element={<Profile />}></Route>
         <Route path={url.history} element={<UserHistory />}></Route>
         <Route path={url.address} element={<UserAddress />}></Route>
+        <Route path={url.searchPage} element={<SearchPage />}></Route>
         <Route path={url.user_info} element={<Navigate to="/user-info/profile" replace />} >
 
           {/* <Route path="history" element={<UserHistory />}></Route>
           <Route path="user-address" element={<UserAddress />}></Route> */}
         </Route>
-
+        <Route path={url.checkout_success} element={<CheckoutSuccess />}></Route>
         {/* admin */}
         <Route path={url.admin} element={<Navigate to="/admin/product/list" replace />} ></Route>
         <Route path={url.admin_login} element={<Login />}></Route>

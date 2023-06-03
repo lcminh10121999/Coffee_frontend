@@ -5,6 +5,7 @@ export const ROUTER_URL = {
     product: "/product",
     cart: "/cart",
     checkout: "/checkout",
+    searchPage: "/search",
     news: "/news",
     user_info: "/user-info",
     profile: "/user-info/profile",
@@ -22,4 +23,5 @@ export const ROUTER_URL = {
     admin_users_list: "/admin/users/list",
     admin_topping_size: "/admin/topping-size",
     admin_topping_size_list: "/admin/topping-size/list",
+    checkout_success : "/checkout-success",
 }

@@ -110,9 +110,9 @@ input:focus,textarea:focus,select:focus{
     padding: 5px;
   }
  
-  .nav-translate:hover + .sub-nav-translate{
+  /* .nav-translate:hover + .sub-nav-translate{
     display: block;
-  }
+  } */
 
   
 

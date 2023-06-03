@@ -8,12 +8,12 @@ function CardInformation(props) {
   return (
     <div className={`w-full  p-4 `}>
       <div className={`rounded-md ${props.shadow} ${props.flexCLass}`}>
-        <div className="">
+        <div className=" overflow-hidden">
           <Link to={`/news/1/chiec-ly-doi-mau`}>
             <img
-              src="https://file.hstatic.net/1000075078/file/sig-01_2c5b08d6b9294c82ac64901e12ae6106_master.png"
+              src={props.cartImage}
               alt=""
-              className={`rounded-md hover:scale-105 ${props.maxHeightImg}`}
+              className={`rounded-md  overflow-hidden hover:scale-105 ${props.maxHeightImg}`}
             />
           </Link>
         </div>
